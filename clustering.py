@@ -1,18 +1,4 @@
-import streamlit as st
-import pickle
-import numpy as np
+import streamlit
+from create import show_predict_page
 
-def load_model():
-    with open('saved.pkl', 'rb') as file:
-     data = pickle.load(file)
-    
-    return data
-
-data = load_model()
-
-model = data["model"]
-
-def show_predict_page():
-    st.title("FB Live Seller Clustering")
-    
-    st.write("""### FB Live Seller Clustering""")
+show_predict_page()
