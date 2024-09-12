@@ -4,9 +4,6 @@ import streamlit as st
 # Title of the app
 st.title('FB Live Seller Clustering')
 
-# Some text and an input box
-model = st.selectbox("Select a clustering model")
-
 # If the user inputs their name, show a greeting
 model = st.selectbox(
     'Select a clustering model:',
