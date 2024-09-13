@@ -76,6 +76,22 @@ def plot_gmm_clusters(X_pca, cluster_labels, n_components):
     st.pyplot(plt)
     plt.close()  # Close the plot to avoid display issues
 
+def plot_dbscan_clusters(X_pca, cluster_labels, n_components):
+    if isinstance(X_pca, pd.DataFrame):
+        X_pca = X_pca.to_numpy()
+        
+    fig, ax = plt.subplots(figsize=(8, 6))
+    scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='plasma')
+    ax.set_xlabel('PCA Component 1')
+    ax.set_ylabel('PCA Component 2')
+    ax.set_title('DBSCAN Clustering on PCA-Reduced Data')
+    cbar = plt.colorbar(scatter, ax=ax, label='Cluster Label')
+    st.pyplot(fig)
+
+    # Use Streamlit's st.pyplot() to display the plot
+    st.pyplot(plt)
+    plt.close()  # Close the plot to avoid display issues
+
 def plot_pairplot(X_pca, cluster_labels):
     # Create a DataFrame for pairplot
     if isinstance(X_pca, pd.DataFrame):
@@ -162,19 +178,10 @@ if model == 'DBSCAN':
     dbscan = DBSCAN(eps=eps, min_samples=min_samples)
     cluster_labels = dbscan.fit_predict(X_pca)
 
-    if isinstance(X_pca, pd.DataFrame):
-        X_pca = X_pca.to_numpy()
- 
     data_with_clusters = X_pca.copy()
     data_with_clusters['Cluster'] = cluster_labels
 
-    fig, ax = plt.subplots(figsize=(8, 6))
-    scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='plasma')
-    ax.set_xlabel('PCA Component 1')
-    ax.set_ylabel('PCA Component 2')
-    ax.set_title('DBSCAN Clustering on PCA-Reduced Data')
-    cbar = plt.colorbar(scatter, ax=ax, label='Cluster Label')
-    st.pyplot(fig)
+    plot_dbscan_clusters(X_pca, cluster_labels, min_samples)
     
 
     st.write("Clustering result:")
