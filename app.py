@@ -18,13 +18,13 @@ import numpy as np
 st.title('FB Live Seller Clustering')
 
 url = 'https://raw.githubusercontent.com/longjoey/Clustering/main/X_pca.csv'
-url2 = 
+url2 = 'https://raw.githubusercontent.com/longjoey/Clustering/main/normalized_df.csv'
 
 def load_data():
     return pd.read_csv(url)
 
 def load_data2():
-    return pd.read_csv(url)
+    return pd.read_csv(url2)
 
 def calculate_topographic_error(som, data):
     error_count = 0
@@ -59,6 +59,7 @@ def calculate_mqe(som, data):
     return mean_quantization_error
 
 X_pca = load_data()
+normalized_df = load_data2()
 
 # If the user inputs their name, show a greeting
 model = st.selectbox(
@@ -266,6 +267,33 @@ if model == 'Self-Organizing Maps':
     mqe = calculate_mqe(som, X_pca)
     st.write(f"Mean Quantization Error: {mqe:.4f}")
 
+if model == 'Agglomerative Clustering':
+    n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
 
+    # Perform Agglomerative Clustering
+    hc = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
+    cluster_labels = hc.fit_predict(normalized_df)
+    
+    # Calculate and display Silhouette Score
+    silhouette_avg = silhouette_score(normalized_df, cluster_labels)
+    st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg:.2f}')
+    
+    # Scatter plot visualization (adjust indices to match your dataset)
+    st.write('Scatter plot of Clusters')
+    fig, ax = plt.subplots()
+    scatter = ax.scatter(normalized_df.iloc[:, 0], normalized_df.iloc[:, 1], c=cluster_labels, cmap='viridis')
+    plt.title(f'Scatter plot of Clusters (n_clusters={n_clusters})')
+    plt.xlabel('Feature 0')  # Replace with actual feature name
+    plt.ylabel('Feature 1')  # Replace with actual feature name
+    plt.colorbar(scatter)
+    st.pyplot(fig)
+    
+    # Calculate Davies-Bouldin Index
+    db_index = davies_bouldin_score(normalized_df, cluster_labels)
+    st.write(f'Davies-Bouldin Index: {db_index:.2f}')
+    
+    # Calculate Calinski-Harabasz Index
+    ch_index = calinski_harabasz_score(normalized_df, cluster_labels)
+    st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
 
 
