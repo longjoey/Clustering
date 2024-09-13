@@ -43,13 +43,12 @@ if model == 'GMM' :
     # Optionally, display a message about the clustering
     st.write(f'GMM clustered the data into {n_components} clusters.')
 
-
+    # Get the count of data points in each cluster
     cluster_counts = data_with_clusters['Cluster'].value_counts().sort_index()
 
-    # Optionally, show a diagram or chart for cluster counts
-    show_diag = st.checkbox('Show Diagram')
-    if show_diag:
-        st.bar_chart(cluster_counts)
+    # Display the cluster counts
+    st.write("Count of data points in each cluster:")
+    st.write(cluster_counts)
 
 
 
