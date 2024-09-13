@@ -1,6 +1,7 @@
 # app.py
 import streamlit as st
 from sklearn.mixture import GaussianMixture
+from sklearn.metrics import silhouette_score
 from sklearn.datasets import make_blobs
 import pandas as pd
 import seaborn as sns
@@ -67,6 +68,10 @@ if model == 'GMM' :
         buf.seek(0)
 
         st.image(buf)
+
+    st.title('Sillhouette Score')
+    silhouette_avg = silhouette_score(X_pca, cluster_labels)
+    st.write(f"Silhouette Score: {silhouette_avg:.2f}")
 
 
 
