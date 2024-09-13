@@ -61,6 +61,9 @@ def calculate_mqe(som, data):
     return mean_quantization_error
 
 def plot_gmm_clusters(X_pca, cluster_labels, n_components):
+    if isinstance(X_pca, pd.DataFrame):
+        X_pca = X_pca.to_numpy()
+        
     plt.figure(figsize=(8, 6))
     plt.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='viridis', s=50, edgecolor='k')
     plt.xlabel('Principal Component 1')
@@ -71,6 +74,7 @@ def plot_gmm_clusters(X_pca, cluster_labels, n_components):
 
     # Use Streamlit's st.pyplot() to display the plot
     st.pyplot(plt)
+    plt.close()  # Close the plot to avoid display issues
 
 X_pca = load_data()
 normalized_df = load_data2()
