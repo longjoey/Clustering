@@ -40,6 +40,19 @@ def calculate_topographic_error(som, data):
     topographic_error = error_count / len(data)
     return topographic_error
 
+def calculate_mqe(som, data):
+    total_error = 0
+    for x in data:
+        # Find the BMU for the data point
+        bmu = som.winner(x)
+        # Calculate the quantization error (distance from the data point to the BMU)
+        quantization_error = np.linalg.norm(x - som._weights[bmu])
+        total_error += quantization_error
+    
+    # Calculate the mean quantization error
+    mean_quantization_error = total_error / len(data)
+    return mean_quantization_error
+
 X_pca = load_data()
 
 # If the user inputs their name, show a greeting
@@ -186,6 +199,9 @@ if model == 'Self-Organizing Maps':
 
     topo_error = calculate_topographic_error(som, X_pca)
     st.write(f"Topographic Error: {topo_error:.2f}")
+
+    mqe = calculate_mqe(som, X_pca)
+    st.write(f"Mean Quantization Error: {mqe:.4f}")
         
 
 
