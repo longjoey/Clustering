@@ -290,6 +290,26 @@ if model == 'Agglomerative Clustering':
         plt.ylabel('Feature 1')  # Replace with actual feature name
         plt.colorbar(scatter)
         st.pyplot(fig)
+
+        normalized_df['Cluster'] = cluster_labels
+
+        # Group the original DataFrame by cluster labels
+        cluster_stats = normalized_df.groupby('Cluster')
+        
+        # Calculate count for each cluster
+        cluster_count = cluster_stats.size()
+        st.write('Cluster Counts:')
+        st.write(cluster_count)
+        
+        # Calculate mean statistics for each cluster
+        cluster_mean = cluster_stats.mean()
+        st.write('Mean Statistics for Each Cluster:')
+        st.dataframe(cluster_mean)
+        
+        # Calculate median statistics for each cluster
+        cluster_median = cluster_stats.median()
+        st.write('Median Statistics for Each Cluster:')
+        st.dataframe(cluster_median)
     
         # Calculate and display Silhouette Score
         silhouette_avg = silhouette_score(normalized_df, cluster_labels)
