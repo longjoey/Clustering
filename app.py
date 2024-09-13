@@ -274,10 +274,6 @@ if model == 'Agglomerative Clustering':
     hc = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
     cluster_labels = hc.fit_predict(normalized_df)
     
-    # Calculate and display Silhouette Score
-    silhouette_avg = silhouette_score(normalized_df, cluster_labels)
-    st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg:.2f}')
-    
     # Scatter plot visualization (adjust indices to match your dataset)
     st.write('Scatter plot of Clusters')
     fig, ax = plt.subplots()
@@ -287,6 +283,10 @@ if model == 'Agglomerative Clustering':
     plt.ylabel('Feature 1')  # Replace with actual feature name
     plt.colorbar(scatter)
     st.pyplot(fig)
+
+    # Calculate and display Silhouette Score
+    silhouette_avg = silhouette_score(normalized_df, cluster_labels)
+    st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg:.2f}')
     
     # Calculate Davies-Bouldin Index
     db_index = davies_bouldin_score(normalized_df, cluster_labels)
