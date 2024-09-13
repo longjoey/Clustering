@@ -2,6 +2,8 @@
 import streamlit as st
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score
+from sklearn.metrics import calinski_harabasz_score
+from sklearn.metrics import davies_bouldin_score
 from sklearn.datasets import make_blobs
 import pandas as pd
 import seaborn as sns
@@ -23,8 +25,6 @@ model = st.selectbox(
     'Select a clustering model:',
     ('GMM', 'Hierarchical Clustering', 'DBSCAN', 'Self-Organizing Maps')
 )
-
-show_diag = st.checkbox('Show Diagram')
 
 if model == 'GMM' :
     n_components = st.slider(
@@ -69,9 +69,14 @@ if model == 'GMM' :
 
         st.image(buf)
 
-    st.title('Sillhouette Score')
     silhouette_avg = silhouette_score(X_pca, cluster_labels)
     st.write(f"Silhouette Score: {silhouette_avg:.2f}")
+
+    calinski_harabasz_avg = calinski_harabasz_score(X_pca, cluster_labels)
+    st.write(f"Calinski-Harabasz Score: {calinski_harabasz_avg:.2f}")
+
+    davies_bouldin_avg = davies_bouldin_score(X_pca, cluster_labels)
+    st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
 
 
 
