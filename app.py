@@ -3,7 +3,9 @@ import streamlit as st
 from sklearn.mixture import GaussianMixture
 from sklearn.datasets import make_blobs
 import pandas as pd
-
+import seaborn as sns
+import matplotlib.pyplot as plt
+from io import BytesIO
 
 # Title of the app
 st.title('FB Live Seller Clustering')
