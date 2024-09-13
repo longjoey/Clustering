@@ -222,23 +222,6 @@ if model == 'Self-Organizing Maps':
     # Convert the coordinates into a single cluster label for each data point
     som_cluster_labels = np.ravel_multi_index(winner_coordinates.T, dims=(som_x, som_y))
 
-    # Step 2: Calculate the silhouette score using the cluster labels
-    silhouette_avg = silhouette_score(X_pca, som_cluster_labels)
-
-    # Display the silhouette score in Streamlit
-    st.write(f"Silhouette Score: {silhouette_avg:.2f}")
-
-    dbi = davies_bouldin_score(X_pca, som_cluster_labels)
-
-    # Display the Davies-Bouldin Index in Streamlit
-    st.write(f"Davies-Bouldin Index: {dbi:.2f}")
-
-    topo_error = calculate_topographic_error(som, X_pca)
-    st.write(f"Topographic Error: {topo_error:.2f}")
-
-    mqe = calculate_mqe(som, X_pca)
-    st.write(f"Mean Quantization Error: {mqe:.4f}")
-        
     # Convert the data and labels to a DataFrame for easier analysis
     df = pd.DataFrame(X_pca, columns=[f'Feature {i}' for i in range(X_pca.shape[1])])
     df['Cluster'] = som_cluster_labels
@@ -260,6 +243,23 @@ if model == 'Self-Organizing Maps':
     
     st.write("Median statistics for each cluster:")
     st.write(median_stats)
+
+    # Step 2: Calculate the silhouette score using the cluster labels
+    silhouette_avg = silhouette_score(X_pca, som_cluster_labels)
+
+    # Display the silhouette score in Streamlit
+    st.write(f"Silhouette Score: {silhouette_avg:.2f}")
+
+    dbi = davies_bouldin_score(X_pca, som_cluster_labels)
+
+    # Display the Davies-Bouldin Index in Streamlit
+    st.write(f"Davies-Bouldin Index: {dbi:.2f}")
+
+    topo_error = calculate_topographic_error(som, X_pca)
+    st.write(f"Topographic Error: {topo_error:.2f}")
+
+    mqe = calculate_mqe(som, X_pca)
+    st.write(f"Mean Quantization Error: {mqe:.4f}")
 
 
 
