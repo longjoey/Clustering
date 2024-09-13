@@ -159,6 +159,11 @@ if model == 'Self-Organizing Maps':
 
     # Display the silhouette score in Streamlit
     st.write(f"Silhouette Score: {silhouette_avg:.2f}")
+
+    dbi = davies_bouldin_score(X_pca, som_cluster_labels)
+
+    # Display the Davies-Bouldin Index in Streamlit
+    st.write(f"Davies-Bouldin Index: {dbi:.2f}")
         
 
 
