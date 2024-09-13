@@ -239,7 +239,27 @@ if model == 'Self-Organizing Maps':
     mqe = calculate_mqe(som, X_pca)
     st.write(f"Mean Quantization Error: {mqe:.4f}")
         
+    # Convert the data and labels to a DataFrame for easier analysis
+    df = pd.DataFrame(X_pca, columns=[f'Feature {i}' for i in range(X_pca.shape[1])])
+    df['Cluster'] = som_cluster_labels
 
+    # Calculate the number of data points in each cluster
+    cluster_counts = df['Cluster'].value_counts().sort_index()
+
+    # Display the counts
+    st.write("Number of data points in each cluster:")
+    st.write(cluster_counts)
+
+    # Calculate mean and median statistics for each cluster
+    mean_stats = df.groupby('Cluster').mean()
+    median_stats = df.groupby('Cluster').median()
+
+    # Display the mean and median statistics
+    st.write("Mean statistics for each cluster:")
+    st.write(mean_stats)
+    
+    st.write("Median statistics for each cluster:")
+    st.write(median_stats)
 
 
 
