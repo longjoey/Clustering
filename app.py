@@ -99,22 +99,20 @@ if model == 'DBSCAN':
     dbscan = DBSCAN(eps=eps, min_samples=min_samples)
     clusters = dbscan.fit_predict(X_pca)
 
-    if len(set(cluster_labels)) == 1 and -1 in cluster_labels:
-        st.write("All data points are considered noise. Try adjusting the parameters.")
-    else:
-        data_with_clusters = X_pca.copy()
-        data_with_clusters['Cluster'] = cluster_labels
-        
-        # Show the resulting clusters
-        st.write("Clustering result:")
-        st.write(data_with_clusters)
-        
-        # Get the count of data points in each cluster
-        cluster_counts = pd.Series(cluster_labels).value_counts().sort_index()
-        
-        # Display the cluster counts
-        st.write("Count of data points in each cluster:")
-        st.write(cluster_counts)
+ 
+    data_with_clusters = X_pca.copy()
+    data_with_clusters['Cluster'] = cluster_labels
+    
+    # Show the resulting clusters
+    st.write("Clustering result:")
+    st.write(data_with_clusters)
+    
+    # Get the count of data points in each cluster
+    cluster_counts = pd.Series(cluster_labels).value_counts().sort_index()
+    
+    # Display the cluster counts
+    st.write("Count of data points in each cluster:")
+    st.write(cluster_counts)
     
 
 
