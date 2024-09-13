@@ -148,37 +148,7 @@ if model == 'Self-Organizing Maps':
     som.random_weights_init(X_pca)  # Initialize weights with input data
     som.train_random(X_pca, 1000)  # Train the SOM
     
-    # Visualize the SOM
-    st.write("SOM Weight Map")
-    
-    # Create a figure to plot the SOM
-    fig, ax = plt.subplots(figsize=(8, 6))
-    
-    # Visualize the SOM weight map with a scatter plot
-    weights = som.get_weights()
-    
-    # Use the weight vectors to color the SOM grid
-    for i in range(som_x):
-        for j in range(som_y):
-            w = weights[i, j]
-            # Plot weight nodes with color based on the sum of the weights (this is arbitrary for visual effect)
-            ax.plot(i + 0.5, j + 0.5, 'o', markersize=20, markeredgecolor='black', 
-                    markerfacecolor=plt.cm.viridis(np.sum(w)))
-    
-    ax.set_xlim([0, som_x])
-    ax.set_ylim([0, som_y])
-    ax.set_xticks(np.arange(0, som_x + 1))
-    ax.set_yticks(np.arange(0, som_y + 1))
-    ax.grid(True)
-    ax.set_title('SOM Weight Map')
-    
-    # Save the figure to a BytesIO object
-    buf = BytesIO()
-    fig.savefig(buf, format="png")
-    buf.seek(0)
-    
-    # Display the image in Streamlit
-    st.image(buf, use_column_width=True)
+     
         
 
 
