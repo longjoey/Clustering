@@ -84,10 +84,6 @@ def plot_pairplot(X_pca, cluster_labels):
         df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(X_pca.shape[1])])
     
     df['Cluster'] = cluster_labels
-    
-    # Debugging: Check the DataFrame contents
-    st.write("DataFrame for Pairplot:")
-    st.write(df.head())
 
     # Plot pairplot
     plt.figure(figsize=(10, 8))
