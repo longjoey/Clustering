@@ -10,6 +10,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from io import BytesIO
+from minisom import MiniSom
 
 # Title of the app
 st.title('FB Live Seller Clustering')
@@ -133,9 +134,45 @@ if model == 'DBSCAN':
     davies_bouldin_avg = davies_bouldin_score(X_pca, cluster_labels)
     st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
 
+if model == 'Self-Organizing Maps':
+    som_x = st.slider('Select SOM grid width:', 5, 20, 10)  # Grid width
+    som_y = st.slider('Select SOM grid height:', 5, 20, 10)  # Grid height
 
 
-
+    st.write(f'Training SOM with grid size {som_x}x{som_y}')
+    som = MiniSom(x=som_x, y=som_y, input_len=X_pca.shape[1], sigma=1.0, learning_rate=0.5)
+    som.random_weights_init(X_pca)
+    som.train_random(X_pca, 1000)  # Number of iterations can be set here
+    
+    # Visualize the SOM
+    st.write("SOM Weight Map")
+    
+    # Create a figure to plot the SOM
+    fig, ax = plt.subplots(figsize=(8, 6))
+    
+    # Create a color-coded grid showing SOM weights
+    weights = som.get_weights()
+    for i in range(som_x):
+        for j in range(som_y):
+            w = weights[i, j]
+            ax.plot(i + 0.5, j + 0.5, 'o', markersize=20, markeredgecolor='black', 
+                    markerfacecolor='C{}'.format(int(np.sum(w * 100) % 10)))
+    
+    ax.set_xlim([0, som_x])
+    ax.set_ylim([0, som_y])
+    ax.set_xticks(np.arange(0, som_x + 1))
+    ax.set_yticks(np.arange(0, som_y + 1))
+    ax.grid(True)
+    ax.set_title('SOM Weight Map')
+    
+    # Save the figure to a BytesIO object
+    buf = BytesIO()
+    fig.savefig(buf, format="png")
+    buf.seek(0)
+    
+    # Display the image in Streamlit
+    st.image(buf, use_column_width=True)
+    
 
 
 
