@@ -269,14 +269,15 @@ if model == 'Self-Organizing Maps':
     st.write(f"Mean Quantization Error: {mqe:.4f}")
 
 if model == 'Agglomerative Clustering':
-    n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
-
+    
     dataset = st.selectbox(
         'Select a dataset:',
         ('Normal', 'Dimentionality Reduction')
     )
 
     if dataset == 'Normal':
+        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
+
         # Perform Agglomerative Clustering
         hc = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
         cluster_labels = hc.fit_predict(normalized_df)
