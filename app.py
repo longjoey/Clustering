@@ -386,7 +386,7 @@ if model == 'Agglomerative Clustering':
         silhouette_avg = silhouette_score(pca_transformed, cluster_labels)
         st.write(f'Silhouette Score: {silhouette_avg:.2f}')
 
-if model == 'Birch Clustering':
+if model == 'BIRCH Clustering':
 
     dataset = st.selectbox(
         'Select a dataset:',
