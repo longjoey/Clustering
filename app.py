@@ -78,14 +78,22 @@ def plot_gmm_clusters(X_pca, cluster_labels, n_components):
 
 def plot_pairplot(X_pca, cluster_labels):
     # Create a DataFrame for pairplot
-    df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(X_pca.shape[1])])
+    if isinstance(X_pca, pd.DataFrame):
+        df = X_pca.copy()
+    else:
+        df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(X_pca.shape[1])])
+    
     df['Cluster'] = cluster_labels
+    
+    # Debugging: Check the DataFrame contents
+    st.write("DataFrame for Pairplot:")
+    st.write(df.head())
 
     # Plot pairplot
     plt.figure(figsize=(10, 8))
     pairplot = sns.pairplot(df, hue='Cluster', palette='viridis')
     plt.suptitle('Pairplot of PCA Components Colored by Clusters', y=1.02)
-
+    
     # Use Streamlit's st.pyplot() to display the plot
     st.pyplot(plt)
     plt.close()  # Close the plot to avoid display issues
