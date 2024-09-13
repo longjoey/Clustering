@@ -55,19 +55,13 @@ if model == 'GMM' :
 
     show_pairplot = st.checkbox('Show Pairplot')
     if show_pairplot:
-        # Create a DataFrame for pairplot
-        df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(5)])
+        df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(X_pca.shape[1])])
         df['Cluster'] = cluster_labels
 
         # Plot pairplot
-        plt.figure(figsize=(10, 8))
-        sns.pairplot(df, hue='Cluster', palette='viridis')
-        
-        buf = BytesIO()
-        sns_plot.savefig(buf, format="png")
-        buf.seek(0)
-
-        st.image(buf)
+        st.write("Pairplot of PCA Components Colored by Clusters")
+        fig = sns.pairplot(df, hue='Cluster', palette='viridis').fig
+        st.pyplot(fig)
 
     # Calculate mean and median statistics for each cluster
     mean_stats = data_with_clusters.groupby('Cluster').mean()
