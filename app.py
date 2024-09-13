@@ -162,6 +162,8 @@ if model == 'DBSCAN':
     dbscan = DBSCAN(eps=eps, min_samples=min_samples)
     cluster_labels = dbscan.fit_predict(X_pca)
 
+    if isinstance(X_pca, pd.DataFrame):
+        X_pca = X_pca.to_numpy()
  
     data_with_clusters = X_pca.copy()
     data_with_clusters['Cluster'] = cluster_labels
