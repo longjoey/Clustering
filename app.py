@@ -63,7 +63,7 @@ model = st.selectbox(
 
 if model == 'GMM' :
     n_components = st.slider(
-        'Number of components:', 1, 10, 3
+        'Number of components:', 1, 10, 8
     )
 
     gmm = GaussianMixture(covariance_type = 'diag', n_components = n_components, random_state = 42) 
