@@ -54,24 +54,19 @@ if model == 'GMM' :
 
     show_pairplot = st.checkbox('Show Pairplot')
     if show_pairplot:
-        # Check if PCA data has numeric values
-        if X_pca.select_dtypes(include=['float', 'int']).shape[1] > 0:
-            # Create a DataFrame for the pairplot
-            df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(X_pca.shape[1])])
-            df['Cluster'] = cluster_labels
+        # Create a DataFrame for pairplot
+        df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(5)])
+        df['Cluster'] = cluster_labels
 
-            # Generate the seaborn pairplot
-            sns_plot = sns.pairplot(df, hue='Cluster', palette='viridis')
+        # Plot pairplot
+        plt.figure(figsize=(10, 8))
+        sns.pairplot(df, hue='Cluster', palette='viridis')
+        
+        buf = BytesIO()
+        sns_plot.savefig(buf, format="png")
+        buf.seek(0)
 
-            # Save the plot to a BytesIO buffer
-            buf = BytesIO()
-            sns_plot.savefig(buf, format="png")
-            buf.seek(0)
-
-            # Display the pairplot in Streamlit
-            st.image(buf)
-        else:
-            st.write("Error: PCA data is not numeric and cannot be plotted.")
+        st.image(buf)
 
 
 
