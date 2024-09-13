@@ -86,7 +86,7 @@ def plot_dbscan_clusters(X_pca, cluster_labels, n_components):
     ax.set_ylabel('PCA Component 2')
     ax.set_title('DBSCAN Clustering on PCA-Reduced Data')
     cbar = plt.colorbar(scatter, ax=ax, label='Cluster Label')
-    st.pyplot(fig)
+
 
     # Use Streamlit's st.pyplot() to display the plot
     st.pyplot(plt)
