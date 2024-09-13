@@ -69,8 +69,8 @@ if model == 'GMM' :
         fig.savefig(buf, format="png")
         buf.seek(0)
 
-# Display the image in Streamlit
-st.image(buf, use_column_width=True)
+        # Display the image in Streamlit
+        st.image(buf, use_column_width=True)
 
     # Calculate mean and median statistics for each cluster
     mean_stats = data_with_clusters.groupby('Cluster').mean()
