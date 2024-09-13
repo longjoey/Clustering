@@ -69,6 +69,16 @@ if model == 'GMM' :
 
         st.image(buf)
 
+    # Calculate mean and median statistics for each cluster
+    mean_stats = data_with_clusters.groupby('Cluster').mean()
+    median_stats = data_with_clusters.groupby('Cluster').median()
+
+    st.write("Mean statistics for each cluster:")
+    st.write(mean_stats)
+
+    st.write("Median statistics for each cluster:")
+    st.write(median_stats)
+
     silhouette_avg = silhouette_score(X_pca, cluster_labels)
     st.write(f"Silhouette Score: {silhouette_avg:.2f}")
 
