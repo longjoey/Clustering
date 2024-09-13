@@ -148,7 +148,16 @@ if model == 'Self-Organizing Maps':
     som.random_weights_init(X_pca)  # Initialize weights with input data
     som.train_random(X_pca, 1000)  # Train the SOM
     
-     
+    winner_coordinates = np.array([som.winner(x) for x in X_pca])
+
+    # Convert the coordinates into a single cluster label for each data point
+    som_cluster_labels = np.ravel_multi_index(winner_coordinates.T, dims=(som_x, som_y))
+
+    # Step 2: Calculate the silhouette score using the cluster labels
+    silhouette_avg = silhouette_score(X_pca, som_cluster_labels)
+
+    # Display the silhouette score in Streamlit
+    st.write(f"Silhouette Score: {silhouette_avg:.2f}")
         
 
 
