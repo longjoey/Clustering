@@ -11,6 +11,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from io import BytesIO
 from minisom import MiniSom
+import numpy as np
 
 # Title of the app
 st.title('FB Live Seller Clustering')
