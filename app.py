@@ -21,6 +21,25 @@ url = 'https://raw.githubusercontent.com/longjoey/Clustering/main/X_pca.csv'
 def load_data():
     return pd.read_csv(url)
 
+def calculate_topographic_error(som, data):
+    error_count = 0
+    for x in data:
+        # Find the best matching unit (BMU)
+        bmu = som.winner(x)
+        
+        # Find the second-best matching unit (2nd BMU)
+        dists = np.linalg.norm(som._weights - x, axis=-1)
+        sorted_indices = np.unravel_index(np.argsort(dists, axis=None), dists.shape)
+        second_bmu = (sorted_indices[0][1], sorted_indices[1][1])  # 2nd BMU
+        
+        # Check if BMU and 2nd BMU are adjacent on the SOM grid
+        if np.abs(bmu[0] - second_bmu[0]) > 1 or np.abs(bmu[1] - second_bmu[1]) > 1:
+            error_count += 1
+    
+    # Calculate the topographic error
+    topographic_error = error_count / len(data)
+    return topographic_error
+
 X_pca = load_data()
 
 # If the user inputs their name, show a greeting
@@ -164,6 +183,9 @@ if model == 'Self-Organizing Maps':
 
     # Display the Davies-Bouldin Index in Streamlit
     st.write(f"Davies-Bouldin Index: {dbi:.2f}")
+
+    topo_error = calculate_topographic_error(som, X_pca)
+    st.write(f"Topographic Error: {topo_error:.2f}")
         
 
 
