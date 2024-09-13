@@ -344,5 +344,25 @@ if model == 'Agglomerative Clustering':
         silhouette_avg = silhouette_score(pca_transformed, cluster_labels)
         st.write(f'Silhouette Score: {silhouette_avg:.2f}')
 
-    
+        # Step 5: Cluster Count, Mean, and Median Statistics
+
+        # Group the original DataFrame by cluster labels
+        cluster_stats = normalized_df.groupby('Cluster')
+        
+        # Calculate count for each cluster
+        cluster_count = cluster_stats.size()
+        st.write('Cluster Counts:')
+        st.write(cluster_count)
+        
+        # Calculate mean statistics for each cluster
+        cluster_mean = cluster_stats.mean()
+        st.write('Mean Statistics for Each Cluster:')
+        st.dataframe(cluster_mean)
+        
+        # Calculate median statistics for each cluster
+        cluster_median = cluster_stats.median()
+        st.write('Median Statistics for Each Cluster:')
+        st.dataframe(cluster_median)
+        
+            
 
