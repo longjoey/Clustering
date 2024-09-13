@@ -106,10 +106,13 @@ if model == 'DBSCAN':
     # Show the resulting clusters
     st.write("Clustering result:")
     st.write(data_with_clusters)
-    
+
+    # Optionally, display a message about the clustering
+    st.write(f'GMM clustered the data into {n_components} clusters.')
+
     # Get the count of data points in each cluster
-    cluster_counts = pd.Series(cluster_labels).value_counts().sort_index()
-    
+    cluster_counts = data_with_clusters['Cluster'].value_counts().sort_index()
+
     # Display the cluster counts
     st.write("Count of data points in each cluster:")
     st.write(cluster_counts)
