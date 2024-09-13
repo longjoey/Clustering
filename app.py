@@ -374,8 +374,6 @@ if model == 'Agglomerative Clustering':
         ch_index = calinski_harabasz_score(normalized_df, cluster_labels)
         st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
     else:
-        
-        
         # Step 2: Perform Agglomerative Clustering on PCA-transformed data
         agglo = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
         cluster_labels = agglo.fit_predict(pca_transformed)
@@ -435,7 +433,7 @@ if model == 'BIRCH Clustering':
     )
 
     if dataset == 'Normal':
-        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
+        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5, threshold=0.8)
 
         # Step 1: Apply BIRCH Clustering
         birch_model = Birch(n_clusters=n_clusters)
