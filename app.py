@@ -114,6 +114,25 @@ if model == 'DBSCAN':
     st.write("Count of data points in each cluster:")
     st.write(cluster_counts)
 
+    # Calculate mean and median statistics for each cluster
+    mean_stats = data_with_clusters.groupby('Cluster').mean()
+    median_stats = data_with_clusters.groupby('Cluster').median()
+
+    st.write("Mean statistics for each cluster:")
+    st.write(mean_stats)
+
+    st.write("Median statistics for each cluster:")
+    st.write(median_stats)
+
+    silhouette_avg = silhouette_score(X_pca, cluster_labels)
+    st.write(f"Silhouette Score: {silhouette_avg:.2f}")
+
+    calinski_harabasz_avg = calinski_harabasz_score(X_pca, cluster_labels)
+    st.write(f"Calinski-Harabasz Score: {calinski_harabasz_avg:.2f}")
+
+    davies_bouldin_avg = davies_bouldin_score(X_pca, cluster_labels)
+    st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
+
 
 
 
