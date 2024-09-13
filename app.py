@@ -8,7 +8,7 @@ import pandas as pd
 # Title of the app
 st.title('FB Live Seller Clustering')
 
-url = https://raw.githubusercontent.com/longjoey/Clustering/main/X_pca.csv
+url = 'https://raw.githubusercontent.com/longjoey/Clustering/main/X_pca.csv'
 
 def load_data():
     return pd.read_csv(url)
