@@ -421,27 +421,28 @@ if model == 'BIRCH Clustering':
         st.dataframe(normalized_df.head())
     else:
         n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
-
-        # Step 1: Apply BIRCH Clustering
         birch_model = Birch(n_clusters=n_clusters)
-        birch_labels = birch_model.fit_predict(normalized_df)
         
-        # Step 2: Add the BIRCH cluster labels to the DataFrame
-        normalized_df['BIRCH_Cluster_Labels'] = birch_labels
+        # Fit the model and predict cluster labels
+        birch_labels = birch_model.fit_predict(pca_transformed)
         
-        # Step 3: Visualize the clusters using the first two features for simplicity
+        # Create a DataFrame for PCA-transformed data and add the cluster labels
+        clustered_df = pd.DataFrame(pca_transformed, columns=[f'PC{i+1}' for i in range(pca_transformed.shape[1])])
+        clustered_df['BIRCH_Cluster'] = birch_labels
+        
+        # Visualize the BIRCH clusters in the PCA-reduced space
         st.write('BIRCH Clustering Visualization')
         fig, ax = plt.subplots(figsize=(10, 7))
-        scatter = ax.scatter(normalized_df.iloc[:, 0], normalized_df.iloc[:, 1], c=birch_labels, cmap='viridis')
-        plt.xlabel('Feature 1 (scaled)')
-        plt.ylabel('Feature 2 (scaled)')
-        plt.title('BIRCH Clustering Visualization')
-        plt.colorbar(scatter, label='Cluster')
+        scatter = ax.scatter(clustered_df['PC1'], clustered_df['PC2'], c=birch_labels, cmap='viridis', marker='o')
+        plt.xlabel('Principal Component 1')
+        plt.ylabel('Principal Component 2')
+        plt.title('BIRCH Clustering Results in PCA-Reduced Space')
+        plt.colorbar(label='Cluster')
         st.pyplot(fig)
         
-        # Display the DataFrame with the cluster labels
+        # Display the DataFrame with the first few rows
         st.write('DataFrame with BIRCH Cluster Labels:')
-        st.dataframe(normalized_df.head())
+        st.dataframe(clustered_df.head())
 
 
         
