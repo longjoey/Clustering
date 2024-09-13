@@ -270,30 +270,77 @@ if model == 'Self-Organizing Maps':
 if model == 'Agglomerative Clustering':
     n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
 
-    # Perform Agglomerative Clustering
-    hc = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
-    cluster_labels = hc.fit_predict(normalized_df)
-    
-    # Scatter plot visualization (adjust indices to match your dataset)
-    st.write('Scatter plot of Clusters')
-    fig, ax = plt.subplots()
-    scatter = ax.scatter(normalized_df.iloc[:, 0], normalized_df.iloc[:, 1], c=cluster_labels, cmap='viridis')
-    plt.title(f'Scatter plot of Clusters (n_clusters={n_clusters})')
-    plt.xlabel('Feature 0')  # Replace with actual feature name
-    plt.ylabel('Feature 1')  # Replace with actual feature name
-    plt.colorbar(scatter)
-    st.pyplot(fig)
+    dataset = st.selectbox(
+        'Select a dataset:',
+        ('Normal', 'Dimentionality Reduction')
+    )
 
-    # Calculate and display Silhouette Score
-    silhouette_avg = silhouette_score(normalized_df, cluster_labels)
-    st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg:.2f}')
+    if dataset == 'Normal':
+        # Perform Agglomerative Clustering
+        hc = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
+        cluster_labels = hc.fit_predict(normalized_df)
+        
+        # Scatter plot visualization (adjust indices to match your dataset)
+        st.write('Scatter plot of Clusters')
+        fig, ax = plt.subplots()
+        scatter = ax.scatter(normalized_df.iloc[:, 0], normalized_df.iloc[:, 1], c=cluster_labels, cmap='viridis')
+        plt.title(f'Scatter plot of Clusters (n_clusters={n_clusters})')
+        plt.xlabel('Feature 0')  # Replace with actual feature name
+        plt.ylabel('Feature 1')  # Replace with actual feature name
+        plt.colorbar(scatter)
+        st.pyplot(fig)
     
-    # Calculate Davies-Bouldin Index
-    db_index = davies_bouldin_score(normalized_df, cluster_labels)
-    st.write(f'Davies-Bouldin Index: {db_index:.2f}')
-    
-    # Calculate Calinski-Harabasz Index
-    ch_index = calinski_harabasz_score(normalized_df, cluster_labels)
-    st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
+        # Calculate and display Silhouette Score
+        silhouette_avg = silhouette_score(normalized_df, cluster_labels)
+        st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg:.2f}')
+        
+        # Calculate Davies-Bouldin Index
+        db_index = davies_bouldin_score(normalized_df, cluster_labels)
+        st.write(f'Davies-Bouldin Index: {db_index:.2f}')
+        
+        # Calculate Calinski-Harabasz Index
+        ch_index = calinski_harabasz_score(normalized_df, cluster_labels)
+        st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
+    else:
+        n_pca_components = st.slider('Select number of PCA components:', min_value=2, max_value=10, value=5)
 
+        # Step 1: Apply PCA for dimensionality reduction
+        pca = PCA(n_components=n_pca_components)
+        pca_transformed = pca.fit_transform(normalized_df)
+        
+        # Number of clusters selection slider
+        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
+        
+        # Step 2: Perform Agglomerative Clustering on PCA-transformed data
+        agglo = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
+        cluster_labels = agglo.fit_predict(pca_transformed)
+        
+        # Add cluster labels to the original DataFrame
+        normalized_df['Cluster'] = cluster_labels
+        
+        # Step 3: Plot the clusters
+        st.write('Clusters after Scaling and PCA')
+        fig, ax = plt.subplots(figsize=(10, 7))
+        scatter = ax.scatter(pca_transformed[:, 0], pca_transformed[:, 1], c=cluster_labels, cmap='viridis', marker='o')
+        plt.xlabel('Principal Component 1')
+        plt.ylabel('Principal Component 2')
+        plt.title(f'Clusters (n_clusters={n_clusters}) after PCA')
+        plt.colorbar(scatter, label='Cluster')
+        st.pyplot(fig)
+        
+        # Step 4: Calculate Clustering Scores
+        
+        # Calculate Davies-Bouldin Index
+        db_index = davies_bouldin_score(pca_transformed, cluster_labels)
+        st.write(f'Davies-Bouldin Index: {db_index:.2f}')
+        
+        # Calculate Calinski-Harabasz Index
+        ch_index = calinski_harabasz_score(pca_transformed, cluster_labels)
+        st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
+        
+        # Optional: Calculate Silhouette Score
+        silhouette_avg = silhouette_score(pca_transformed, cluster_labels)
+        st.write(f'Silhouette Score: {silhouette_avg:.2f}')
+
+    
 
