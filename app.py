@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 from minisom import MiniSom
 from sklearn.cluster import AgglomerativeClustering
+from sklearn.decomposition import PCA
 import numpy as np
 
 # Title of the app
