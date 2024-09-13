@@ -437,7 +437,7 @@ if model == 'BIRCH Clustering':
         plt.xlabel('Principal Component 1')
         plt.ylabel('Principal Component 2')
         plt.title('BIRCH Clustering Results in PCA-Reduced Space')
-        plt.colorbar(label='birch_labels')
+        plt.colorbar(label='Cluster')
         st.pyplot(fig)
         
         # Display the DataFrame with the first few rows
