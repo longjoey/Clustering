@@ -14,6 +14,7 @@ from minisom import MiniSom
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.decomposition import PCA
 import numpy as np
+from sklearn.cluster import Birch
 
 # Title of the app
 st.title('FB Live Seller Clustering')
@@ -384,6 +385,38 @@ if model == 'Agglomerative Clustering':
         # Optional: Calculate Silhouette Score
         silhouette_avg = silhouette_score(pca_transformed, cluster_labels)
         st.write(f'Silhouette Score: {silhouette_avg:.2f}')
+
+if model == 'Birch Clustering':
+
+    dataset = st.selectbox(
+        'Select a dataset:',
+        ('Normal', 'Dimentionality Reduction')
+    )
+
+    if dataset == 'Normal':
+        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
+
+        # Step 1: Apply BIRCH Clustering
+        birch_model = Birch(n_clusters=n_clusters)
+        birch_labels = birch_model.fit_predict(normalized_df)
+        
+        # Step 2: Add the BIRCH cluster labels to the DataFrame
+        normalized_df['BIRCH_Cluster_Labels'] = birch_labels
+        
+        # Step 3: Visualize the clusters using the first two features for simplicity
+        st.write('BIRCH Clustering Visualization')
+        fig, ax = plt.subplots(figsize=(10, 7))
+        scatter = ax.scatter(normalized_df.iloc[:, 0], normalized_df.iloc[:, 1], c=birch_labels, cmap='viridis')
+        plt.xlabel('Feature 1 (scaled)')
+        plt.ylabel('Feature 2 (scaled)')
+        plt.title('BIRCH Clustering Visualization')
+        plt.colorbar(scatter, label='Cluster')
+        st.pyplot(fig)
+        
+        # Display the DataFrame with the cluster labels
+        st.write('DataFrame with BIRCH Cluster Labels:')
+        st.dataframe(normalized_df.head())
+
 
         
             
