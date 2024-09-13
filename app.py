@@ -114,24 +114,6 @@ if model == 'DBSCAN':
     st.write("Count of data points in each cluster:")
     st.write(cluster_counts)
 
-    st.write("DBSCAN Clustering Results")
-
-    fig, ax = plt.subplots(figsize=(8, 6))
-    scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='plasma')
-    ax.set_xlabel('PCA Component 1')
-    ax.set_ylabel('PCA Component 2')
-    ax.set_title('DBSCAN Clustering on PCA-Reduced Data')
-    fig.colorbar(scatter, ax=ax, label='Cluster Label')
-    ax.grid()
-    
-    # Save the figure to a BytesIO object
-    buf = BytesIO()
-    fig.savefig(buf, format="png")
-    buf.seek(0)
-    
-    # Display the image in Streamlit
-    st.image(buf, use_column_width=True)
-
     # Calculate mean and median statistics for each cluster
     mean_stats = data_with_clusters.groupby('Cluster').mean()
     median_stats = data_with_clusters.groupby('Cluster').median()
