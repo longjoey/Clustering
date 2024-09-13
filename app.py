@@ -5,6 +5,7 @@ from sklearn.metrics import silhouette_score
 from sklearn.metrics import calinski_harabasz_score
 from sklearn.metrics import davies_bouldin_score
 from sklearn.datasets import make_blobs
+from sklearn.cluster import DBSCAN
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -90,6 +91,31 @@ if model == 'GMM' :
 
     davies_bouldin_avg = davies_bouldin_score(X_pca, cluster_labels)
     st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
+
+if model == 'DBSCAN':
+    eps = st.slider('Select eps:', 0.01, 5.0, 0.5, step=0.01)
+    min_samples = st.slider('Select min_samples:', 1, 50, 5)
+
+    dbscan = DBSCAN(eps=eps, min_samples=min_sampples)
+    clusters = dbscan.fit_predict(X_pca)
+
+    if len(set(cluster_labels)) == 1 and -1 in cluster_labels:
+        st.write("All data points are considered noise. Try adjusting the parameters.")
+    else:
+        data_with_clusters = X_pca.copy()
+        data_with_clusters['Cluster'] = cluster_labels
+        
+        # Show the resulting clusters
+        st.write("Clustering result:")
+        st.write(data_with_clusters)
+        
+        # Get the count of data points in each cluster
+        cluster_counts = pd.Series(cluster_labels).value_counts().sort_index()
+        
+        # Display the cluster counts
+        st.write("Count of data points in each cluster:")
+        st.write(cluster_counts)
+    
 
 
 
