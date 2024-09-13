@@ -269,7 +269,7 @@ if model == 'Self-Organizing Maps':
     mqe = calculate_mqe(som, X_pca)
     st.write(f"Mean Quantization Error: {mqe:.4f}")
 
-if model == 'Agglomerative Clustering' || model == 'BIRCH Clustering':
+if model == 'Agglomerative Clustering' or model == 'BIRCH Clustering':
     # PCA Components selection slider
     n_pca_components = st.slider('Select number of PCA components:', min_value=2, max_value=10, value=5, key='pca_components_slider')
     
