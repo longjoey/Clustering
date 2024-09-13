@@ -60,6 +60,18 @@ def calculate_mqe(som, data):
     mean_quantization_error = total_error / len(data)
     return mean_quantization_error
 
+def plot_gmm_clusters(X_pca, cluster_labels, n_components):
+    plt.figure(figsize=(8, 6))
+    plt.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='viridis', s=50, edgecolor='k')
+    plt.xlabel('Principal Component 1')
+    plt.ylabel('Principal Component 2')
+    plt.title(f'GMM Clustering Results ({n_components} Components)')
+    plt.colorbar(label='Cluster')
+    plt.grid()
+
+    # Use Streamlit's st.pyplot() to display the plot
+    st.pyplot(plt)
+
 X_pca = load_data()
 normalized_df = load_data2()
 
@@ -98,22 +110,7 @@ if model == 'GMM' :
 
     show_pairplot = st.checkbox('Show Pairplot')
     if show_pairplot:
-        # Create a DataFrame for pairplot
-        df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(X_pca.shape[1])])
-        df['Cluster'] = cluster_labels
-
-        # Plot pairplot
-        st.write("Pairplot of PCA Components Colored by Clusters")
-
-        fig = sns.pairplot(df, hue='Cluster', palette='viridis').fig
-
-        # Save the figure to a BytesIO object
-        buf = BytesIO()
-        fig.savefig(buf, format="png")
-        buf.seek(0)
-
-        # Display the image in Streamlit
-        st.image(buf, use_column_width=True)
+        plot_gmm_clusters(X_pca, cluster_labels, n_components)
 
     # Calculate mean and median statistics for each cluster
     mean_stats = data_with_clusters.groupby('Cluster').mean()
