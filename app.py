@@ -135,6 +135,8 @@ if model == 'DBSCAN':
     st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
 
 if model == 'Self-Organizing Maps':
+    X_pca = X_pca.values
+    
     som_x = st.slider('Select SOM grid width:', 5, 20, 10)  # Grid width
     som_y = st.slider('Select SOM grid height:', 5, 20, 10)  # Grid height
 
