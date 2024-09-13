@@ -165,6 +165,14 @@ if model == 'DBSCAN':
  
     data_with_clusters = X_pca.copy()
     data_with_clusters['Cluster'] = cluster_labels
+
+    fig, ax = plt.subplots(figsize=(8, 6))
+    scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='plasma')
+    ax.set_xlabel('PCA Component 1')
+    ax.set_ylabel('PCA Component 2')
+    ax.set_title('DBSCAN Clustering on PCA-Reduced Data')
+    cbar = plt.colorbar(scatter, ax=ax, label='Cluster Label')
+    st.pyplot(fig)
     
 
     st.write("Clustering result:")
