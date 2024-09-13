@@ -97,7 +97,7 @@ if model == 'DBSCAN':
     min_samples = st.slider('Select min_samples:', 1, 50, 5)
 
     dbscan = DBSCAN(eps=eps, min_samples=min_samples)
-    clusters = dbscan.fit_predict(X_pca)
+    cluster_labels = dbscan.fit_predict(X_pca)
 
  
     data_with_clusters = X_pca.copy()
