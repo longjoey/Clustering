@@ -11,14 +11,19 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from io import BytesIO
 from minisom import MiniSom
+from sklearn.cluster import AgglomerativeClustering
 import numpy as np
 
 # Title of the app
 st.title('FB Live Seller Clustering')
 
 url = 'https://raw.githubusercontent.com/longjoey/Clustering/main/X_pca.csv'
+url2 = 
 
 def load_data():
+    return pd.read_csv(url)
+
+def load_data2():
     return pd.read_csv(url)
 
 def calculate_topographic_error(som, data):
@@ -58,7 +63,7 @@ X_pca = load_data()
 # If the user inputs their name, show a greeting
 model = st.selectbox(
     'Select a clustering model:',
-    ('GMM', 'Hierarchical Clustering', 'DBSCAN', 'Self-Organizing Maps')
+    ('GMM', 'Agglomerative Clustering', 'BIRCH Clustering', 'DBSCAN', 'Self-Organizing Maps')
 )
 
 if model == 'GMM' :
