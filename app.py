@@ -1,5 +1,9 @@
 # app.py
 import streamlit as st
+from sklearn.mixture import GaussianMixture
+from sklearn.datasets import make_blobs
+import pandas as pd
+
 
 # Title of the app
 st.title('FB Live Seller Clustering')
@@ -14,6 +18,8 @@ if model == 'GMM' :
     n_components = st.slider(
         'Number of components:', 1, 10, 3
     )
+
+    
 
 show_diag = st.checkbox('Show Diagram')
 
