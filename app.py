@@ -135,16 +135,17 @@ if model == 'DBSCAN':
     st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
 
 if model == 'Self-Organizing Maps':
-    X_pca = X_pca.values
-    
+    X_pca = X_pca.values  # This is critical to ensure compatibility with MiniSom
+
+    # Sliders for SOM grid dimensions
     som_x = st.slider('Select SOM grid width:', 5, 20, 10)  # Grid width
     som_y = st.slider('Select SOM grid height:', 5, 20, 10)  # Grid height
-
-
+    
+    # Initialize and train the SOM
     st.write(f'Training SOM with grid size {som_x}x{som_y}')
     som = MiniSom(x=som_x, y=som_y, input_len=X_pca.shape[1], sigma=1.0, learning_rate=0.5)
-    som.random_weights_init(X_pca)
-    som.train_random(X_pca, 1000)  # Number of iterations can be set here
+    som.random_weights_init(X_pca)  # Initialize weights with input data
+    som.train_random(X_pca, 1000)  # Train the SOM
     
     # Visualize the SOM
     st.write("SOM Weight Map")
