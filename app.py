@@ -93,7 +93,7 @@ if model == 'GMM' :
     st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
 
 if model == 'DBSCAN':
-    eps = st.slider('Select eps:', 0.01, 5.0, 0.5, step=0.01)
+    eps = st.slider('Select eps:', 0.01, 5.0, 0。2, step=0.01)
     min_samples = st.slider('Select min_samples:', 1, 50, 5)
 
     dbscan = DBSCAN(eps=eps, min_samples=min_samples)
