@@ -452,6 +452,29 @@ if model == 'BIRCH Clustering':
         
         st.write(f"Silhouette Score: {silhouette_birch:.4f}")
         st.write(f"Calinski-Harabasz Index: {calinski_birch:.4f}")
+
+        cluster_stats = clustered_df.groupby('BIRCH_Cluster').agg(
+            count=('BIRCH_Cluster', 'size'),
+            mean_pc1=('PC1', 'mean'),
+            median_pc1=('PC1', 'median'),
+            mean_pc2=('PC2', 'mean'),
+            median_pc2=('PC2', 'median')
+        ).reset_index()
+        
+        # Separate tables for count, mean, and median statistics
+        count_table = cluster_stats[['BIRCH_Cluster', 'count']]
+        mean_table = cluster_stats[['BIRCH_Cluster', 'mean_pc1', 'mean_pc2']]
+        median_table = cluster_stats[['BIRCH_Cluster', 'median_pc1', 'median_pc2']]
+        
+        # Display the tables in Streamlit
+        st.write('Cluster Counts:')
+        st.dataframe(count_table)
+        
+        st.write('Cluster Mean Statistics:')
+        st.dataframe(mean_table)
+        
+        st.write('Cluster Median Statistics:')
+        st.dataframe(median_table)
  
 
 
