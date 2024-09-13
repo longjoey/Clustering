@@ -433,10 +433,10 @@ if model == 'BIRCH Clustering':
     )
 
     if dataset == 'Normal':
-        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5, threshold=0.8)
+        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
 
         # Step 1: Apply BIRCH Clustering
-        birch_model = Birch(n_clusters=n_clusters)
+        birch_model = Birch(n_clusters=n_clusters, threshold=0.8)
         birch_labels = birch_model.fit_predict(normalized_df)
         
         # Step 2: Add the BIRCH cluster labels to the DataFrame
