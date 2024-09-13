@@ -446,6 +446,17 @@ if model == 'BIRCH Clustering':
         st.write('DataFrame with BIRCH Cluster Labels:')
         st.dataframe(clustered_df.head())
 
+        # Calculate and display the clustering metrics
+        silhouette_birch = silhouette_score(pca_transformed, birch_labels)
+        calinski_birch = calinski_harabasz_score(pca_transformed, birch_labels)
+        
+        st.write(f"Silhouette Score: {silhouette_birch:.4f}")
+        st.write(f"Calinski-Harabasz Index: {calinski_birch:.4f}")
+        
+        # Display the DataFrame with the first few rows
+        st.write('DataFrame with BIRCH Cluster Labels:')
+        st.dataframe(clustered_df.head())
+
 
         
             
