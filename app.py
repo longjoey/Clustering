@@ -452,10 +452,7 @@ if model == 'BIRCH Clustering':
         
         st.write(f"Silhouette Score: {silhouette_birch:.4f}")
         st.write(f"Calinski-Harabasz Index: {calinski_birch:.4f}")
-        
-        # Display the DataFrame with the first few rows
-        st.write('DataFrame with BIRCH Cluster Labels:')
-        st.dataframe(clustered_df.head())
+ 
 
 
         
