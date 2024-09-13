@@ -350,20 +350,6 @@ if model == 'Agglomerative Clustering':
         plt.colorbar(scatter, label='Cluster')
         st.pyplot(fig)
         
-        # Step 4: Calculate Clustering Scores
-        
-        # Calculate Davies-Bouldin Index
-        db_index = davies_bouldin_score(pca_transformed, cluster_labels)
-        st.write(f'Davies-Bouldin Index: {db_index:.2f}')
-        
-        # Calculate Calinski-Harabasz Index
-        ch_index = calinski_harabasz_score(pca_transformed, cluster_labels)
-        st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
-        
-        # Optional: Calculate Silhouette Score
-        silhouette_avg = silhouette_score(pca_transformed, cluster_labels)
-        st.write(f'Silhouette Score: {silhouette_avg:.2f}')
-
         # Step 5: Cluster Count, Mean, and Median Statistics
 
         # Group the original DataFrame by cluster labels
@@ -383,6 +369,21 @@ if model == 'Agglomerative Clustering':
         cluster_median = cluster_stats.median()
         st.write('Median Statistics for Each Cluster:')
         st.dataframe(cluster_median)
+
+        # Step 4: Calculate Clustering Scores
+        
+        # Calculate Davies-Bouldin Index
+        db_index = davies_bouldin_score(pca_transformed, cluster_labels)
+        st.write(f'Davies-Bouldin Index: {db_index:.2f}')
+        
+        # Calculate Calinski-Harabasz Index
+        ch_index = calinski_harabasz_score(pca_transformed, cluster_labels)
+        st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
+        
+        # Optional: Calculate Silhouette Score
+        silhouette_avg = silhouette_score(pca_transformed, cluster_labels)
+        st.write(f'Silhouette Score: {silhouette_avg:.2f}')
+
         
             
 
