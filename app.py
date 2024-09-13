@@ -303,14 +303,15 @@ if model == 'Agglomerative Clustering':
         ch_index = calinski_harabasz_score(normalized_df, cluster_labels)
         st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
     else:
-        n_pca_components = st.slider('Select number of PCA components:', min_value=2, max_value=10, value=5)
+        # PCA Components selection slider
+        n_pca_components = st.slider('Select number of PCA components:', min_value=2, max_value=10, value=5, key='pca_components_slider')
+        
+        # Number of clusters selection slider
+        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5, key='clusters_slider')
 
         # Step 1: Apply PCA for dimensionality reduction
         pca = PCA(n_components=n_pca_components)
         pca_transformed = pca.fit_transform(normalized_df)
-        
-        # Number of clusters selection slider
-        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
         
         # Step 2: Perform Agglomerative Clustering on PCA-transformed data
         agglo = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
