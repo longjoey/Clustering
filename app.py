@@ -135,8 +135,9 @@ if model == 'DBSCAN':
     st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
 
 if model == 'Self-Organizing Maps':
+    # Convert DataFrame to NumPy array
     X_pca = X_pca.values  # This is critical to ensure compatibility with MiniSom
-
+    
     # Sliders for SOM grid dimensions
     som_x = st.slider('Select SOM grid width:', 5, 20, 10)  # Grid width
     som_y = st.slider('Select SOM grid height:', 5, 20, 10)  # Grid height
@@ -153,13 +154,16 @@ if model == 'Self-Organizing Maps':
     # Create a figure to plot the SOM
     fig, ax = plt.subplots(figsize=(8, 6))
     
-    # Create a color-coded grid showing SOM weights
+    # Visualize the SOM weight map with a scatter plot
     weights = som.get_weights()
+    
+    # Use the weight vectors to color the SOM grid
     for i in range(som_x):
         for j in range(som_y):
             w = weights[i, j]
+            # Plot weight nodes with color based on the sum of the weights (this is arbitrary for visual effect)
             ax.plot(i + 0.5, j + 0.5, 'o', markersize=20, markeredgecolor='black', 
-                    markerfacecolor='C{}'.format(int(np.sum(w * 100) % 10)))
+                    markerfacecolor=plt.cm.viridis(np.sum(w)))
     
     ax.set_xlim([0, som_x])
     ax.set_ylim([0, som_y])
@@ -175,7 +179,7 @@ if model == 'Self-Organizing Maps':
     
     # Display the image in Streamlit
     st.image(buf, use_column_width=True)
-    
+        
 
 
 
