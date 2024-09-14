@@ -335,6 +335,14 @@ if model == 'Agglomerative Clustering':
     # Show the plot in Streamlit
     st.pyplot(fig)
 
+    cluster_counts = np.bincount(labels)  # Use bincount for counting clusters
+    
+    # Display the count for each cluster
+    st.subheader("Cluster Counts")
+    for i in range(n_clusters):
+        st.write(f"Cluster {i}: {cluster_counts[i]} data points")
+
+
     silhouette_agglo = silhouette_score(X_pca, labels)
     calinski_agglo = calinski_harabasz_score(X_pca, labels)
 
