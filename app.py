@@ -538,8 +538,8 @@ if model == 'BIRCH Clustering':
         silhouette_birch = silhouette_score(X_pca, birch_labels)
         calinski_birch = calinski_harabasz_score(X_pca, birch_labels)
 
-        st.write(f"**Silhouette Score**: {silhouette_agglo:.4f}")
-        st.write(f"**Calinski-Harabasz Index**: {calinski_agglo:.4f}")
+        st.write(f"**Silhouette Score**: {silhouette_birch:.4f}")
+        st.write(f"**Calinski-Harabasz Index**: {calinski_birch:.4f}")
 
         #n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
         #birch_model = Birch(n_clusters=n_clusters)
