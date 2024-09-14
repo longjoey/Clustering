@@ -382,6 +382,14 @@ if model == 'BIRCH Clustering':
     # Show the plot in Streamlit
     st.pyplot(fig)
 
+    # Count the number of data points in each cluster
+    cluster_counts = np.bincount(birch_labels)  # Use bincount for counting clusters
+    
+    # Display the count for each cluster
+    st.subheader("Cluster Counts")
+    for i in range(n_clusters):
+        st.write(f"Cluster {i}: {cluster_counts[i]} data points")
+
 
     silhouette_birch = silhouette_score(X_pca, birch_labels)
     calinski_birch = calinski_harabasz_score(X_pca, birch_labels)
