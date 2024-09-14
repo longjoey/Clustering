@@ -449,35 +449,56 @@ if model == 'Agglomerative Clustering':
         #st.write(f'Silhouette Score: {silhouette_avg:.2f}')
 
 if model == 'BIRCH Clustering':
+    X_pca = load_data3()
+    normalized_df = load_data4()
 
     dataset = st.selectbox(
         'Select a dataset:',
         ('Normal', 'Dimentionality Reduction')
     )
-
+    
+    n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=7)
+    
     if dataset == 'Normal':
-        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
-
-        # Step 1: Apply BIRCH Clustering
-        birch_model = Birch(n_clusters=n_clusters, threshold=0.8)
+        birch_model = Birch(n_clusters=n_clusters, threshold=threshold)
         birch_labels = birch_model.fit_predict(normalized_df)
         
-        # Step 2: Add the BIRCH cluster labels to the DataFrame
-        normalized_df['BIRCH_Cluster_Labels'] = birch_labels
-        
-        # Step 3: Visualize the clusters using the first two features for simplicity
-        st.write('BIRCH Clustering Visualization')
+        # Step 2: Visualize the clusters using the first two features
+        st.subheader("BIRCH Clustering Visualization")
         fig, ax = plt.subplots(figsize=(10, 7))
         scatter = ax.scatter(normalized_df.iloc[:, 0], normalized_df.iloc[:, 1], c=birch_labels, cmap='viridis')
-        plt.xlabel('Feature 1 (scaled)')
-        plt.ylabel('Feature 2 (scaled)')
-        plt.title('BIRCH Clustering Visualization')
-        plt.colorbar(scatter, label='Cluster')
+        ax.set_xlabel('Feature 1 (scaled)')
+        ax.set_ylabel('Feature 2 (scaled)')
+        ax.set_title(f'BIRCH Clustering Visualization (n_clusters={n_clusters}, threshold={threshold})')
+        
+        # Add a colorbar to indicate cluster assignments
+        fig.colorbar(scatter, label='Cluster')
+        
+        # Display the plot in Streamlit
         st.pyplot(fig)
         
+        #n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
+
+        # Step 1: Apply BIRCH Clustering
+        #birch_model = Birch(n_clusters=n_clusters, threshold=0.8)
+        #birch_labels = birch_model.fit_predict(normalized_df)
+        
+        # Step 2: Add the BIRCH cluster labels to the DataFrame
+        #normalized_df['BIRCH_Cluster_Labels'] = birch_labels
+        
+        # Step 3: Visualize the clusters using the first two features for simplicity
+        #st.write('BIRCH Clustering Visualization')
+        #fig, ax = plt.subplots(figsize=(10, 7))
+        #scatter = ax.scatter(normalized_df.iloc[:, 0], normalized_df.iloc[:, 1], c=birch_labels, cmap='viridis')
+        #plt.xlabel('Feature 1 (scaled)')
+        #plt.ylabel('Feature 2 (scaled)')
+        #plt.title('BIRCH Clustering Visualization')
+        #plt.colorbar(scatter, label='Cluster')
+        #st.pyplot(fig)
+        
         # Display the DataFrame with the cluster labels
-        st.write('DataFrame with BIRCH Cluster Labels:')
-        st.dataframe(normalized_df.head())
+        #st.write('DataFrame with BIRCH Cluster Labels:')
+        #st.dataframe(normalized_df.head())
     else:
         n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
         birch_model = Birch(n_clusters=n_clusters)
