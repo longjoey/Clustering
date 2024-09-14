@@ -84,6 +84,24 @@ def plot_gmm_clusters(X_pca, cluster_labels, n_components):
     st.pyplot(plt)
     plt.close()  # Close the plot to avoid display issues
 
+def plot_pairplot(X_pca, cluster_labels):
+    # Create a DataFrame for pairplot
+    if isinstance(X_pca, pd.DataFrame):
+        df = X_pca.copy()
+    else:
+        df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(4)])
+    
+    df['Cluster'] = cluster_labels
+
+    # Plot pairplot
+    plt.figure(figsize=(10, 8))
+    pairplot = sns.pairplot(df, hue='Cluster', palette='viridis')
+    plt.suptitle('Pairplot of PCA Components Colored by Clusters', y=1.02)
+    
+    # Use Streamlit's st.pyplot() to display the plot
+    st.pyplot(plt)
+    plt.close()  # Close the plot to avoid display issues
+
 def plot_dbscan_clusters(X_pca, cluster_labels, n_components):
     if isinstance(X_pca, pd.DataFrame):
         X_pca = X_pca.to_numpy()
@@ -140,7 +158,7 @@ if model == 'GMM' :
     st.write(cluster_counts)
 
     
-    plot_gmm_clusters(X_pca, cluster_labels, n_components)
+    plot_pairplot(X_pca, cluster_labels)
      
 
     # Calculate mean and median statistics for each cluster
