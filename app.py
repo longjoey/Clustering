@@ -232,37 +232,24 @@ if model == 'Self-Organizing Maps':
     show_som_map = st.checkbox('Show SOM Weight Map')
 
     if show_som_map:
-        # Visualize the SOM
-        st.write("SOM Weight Map")
+        st.subheader("SOM Clustering Visualization")
+        fig1, ax1 = plt.subplots(figsize=(8, 6))
+        for i, x in enumerate(X_pca):
+            w = som.winner(x)  # Get the winning neuron
+            ax1.text(w[0] + 0.5, w[1] + 0.5, str(i), color=plt.cm.tab10(i % 10), fontdict={'weight': 'bold', 'size': 9})
         
-        # Create a figure to plot the SOM
-        fig, ax = plt.subplots(figsize=(8, 6))
+        ax1.set_xlim([0, som_x])
+        ax1.set_ylim([0, som_y])
+        ax1.set_title('SOM Clustering on PCA-Reduced Data')
+        st.pyplot(fig1)
         
-        # Visualize the SOM weight map with a scatter plot
-        weights = som.get_weights()
-        
-        # Use the weight vectors to color the SOM grid
-        for i in range(som_x):
-            for j in range(som_y):
-                w = weights[i, j]
-                # Plot weight nodes with color based on the sum of the weights
-                ax.plot(i + 0.5, j + 0.5, 'o', markersize=20, markeredgecolor='black', 
-                        markerfacecolor=plt.cm.viridis(np.sum(w)))
-        
-        ax.set_xlim([0, som_x])
-        ax.set_ylim([0, som_y])
-        ax.set_xticks(np.arange(0, som_x + 1))
-        ax.set_yticks(np.arange(0, som_y + 1))
-        ax.grid(True)
-        ax.set_title('SOM Weight Map')
-        
-        # Save the figure to a BytesIO object
-        buf = BytesIO()
-        fig.savefig(buf, format="png")
-        buf.seek(0)
-        
-        # Display the image in Streamlit
-        st.image(buf, use_column_width=True)
+        # Visualize the SOM weight distance map (U-Matrix)
+        st.subheader("SOM U-Matrix Visualization")
+        fig2, ax2 = plt.subplots(figsize=(8, 6))
+        cax = ax2.pcolor(som.distance_map().T, cmap='bone_r')  # Distance map as background
+        fig2.colorbar(cax, label='Distance')
+        ax2.set_title('SOM U-Matrix')
+        st.pyplot(fig2)
 
     
     
