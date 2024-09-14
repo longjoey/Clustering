@@ -318,7 +318,11 @@ if model == 'Agglomerative Clustering':
         # Perform Agglomerative Clustering
         hc = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
         cluster_labels = hc.fit_predict(normalized_df)
-        
+
+        # Calculate Silhouette Score
+        silhouette_avg = silhouette_score(normalized_df, cluster_labels)
+        st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg}')
+                
         # Scatter plot visualization (adjust indices to match your dataset)
         st.write('Scatter plot of Clusters')
         fig, ax = plt.subplots()
@@ -326,7 +330,7 @@ if model == 'Agglomerative Clustering':
         plt.title(f'Scatter plot of Clusters (n_clusters={n_clusters})')
         plt.xlabel('Feature 0')  # Replace with actual feature name
         plt.ylabel('Feature 1')  # Replace with actual feature name
-        plt.colorbar(scatter)
+        fig.colorbar(scatter, label='Cluster')
         st.pyplot(fig)
 
         normalized_df['Cluster'] = cluster_labels
