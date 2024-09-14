@@ -132,22 +132,27 @@ if model == 'GMM' :
     n_components = st.slider(
         'Number of components:', 1, 10, 8
     )
-    X_pca = X_pca.to_numpy()
+    #X_pca = X_pca.to_numpy()
 
     gmm = GaussianMixture(covariance_type = 'diag', n_components = n_components, random_state = 42) 
     gmm.fit(X_pca)  
 
     cluster_labels = gmm.predict(X_pca)
     
-    st.subheader("GMM Clustering Results")
+    if isinstance(X_pca, pd.DataFrame):
+        X_pca = X_pca.to_numpy()
+        
     fig, ax = plt.subplots(figsize=(8, 6))
-    scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='viridis', s=50, edgecolor='k')
-    ax.set_xlabel('Principal Component 1')
-    ax.set_ylabel('Principal Component 2')
-    ax.set_title(f'GMM Clustering Results ({n_components} Components)')
-    fig.colorbar(scatter, ax=ax, label='Cluster')
-    ax.grid(True)
-    st.pyplot(fig)
+    scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='plasma')
+    ax.set_xlabel('PCA Component 1')
+    ax.set_ylabel('PCA Component 2')
+    ax.set_title('GMM Clustering on PCA-Reduced Data')
+    cbar = plt.colorbar(scatter, ax=ax, label='Cluster Label')
+
+
+    # Use Streamlit's st.pyplot() to display the plot
+    st.pyplot(plt)
+    plt.close()  # Close the plot to avoid display issues
     
     # Step 5: Calculate and display evaluation metrics
     silhouette_avg = silhouette_score(X_pca, cluster_labels)
