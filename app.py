@@ -315,8 +315,8 @@ if model == 'Self-Organizing Maps':
     #pca_transformed = pca.fit_transform(normalized_df)
 
 if model == 'Agglomerative Clustering':
-    X_pca = load_df3()
-    normalized_df = load_df4()
+    X_pca = load_data3()
+    normalized_df = load_data4()
     
     dataset = st.selectbox(
         'Select a dataset:',
