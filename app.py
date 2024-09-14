@@ -132,7 +132,7 @@ if model == 'GMM' :
     n_components = st.slider(
         'Number of components:', 1, 10, 8
     )
-    X_pca = X_pca_df.to_numpy()
+    X_pca = X_pca.to_numpy()
 
     gmm = GaussianMixture(covariance_type = 'diag', n_components = n_components, random_state = 42) 
     gmm.fit(X_pca)  
