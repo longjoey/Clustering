@@ -400,6 +400,12 @@ if model == 'Agglomerative Clustering':
         
         # Show the plot in Streamlit
         st.pyplot(fig)
+
+        silhouette_agglo = silhouette_score(X_pca, labels)
+        calinski_agglo = calinski_harabasz_score(X_pca, labels)
+
+        st.write(f"**Silhouette Score**: {silhouette_agglo:.4f}")
+        st.write(f"**Calinski-Harabasz Index**: {calinski_agglo:.4f}")
         
         # Add cluster labels to the original DataFrame
         # normalized_df['Cluster'] = cluster_labels
@@ -457,7 +463,7 @@ if model == 'BIRCH Clustering':
         ('Normal', 'Dimentionality Reduction')
     )
     
-    n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=7)
+    n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
     threshold = st.slider('Select threshold value for BIRCH clustering', min_value=0.1, max_value=1.0, value=0.7)
     
     if dataset == 'Normal':
@@ -527,6 +533,13 @@ if model == 'BIRCH Clustering':
         
         # Show the plot in Streamlit
         st.pyplot(fig)
+
+
+        silhouette_birch = silhouette_score(X_pca, birch_labels)
+        calinski_birch = calinski_harabasz_score(X_pca, birch_labels)
+
+        st.write(f"**Silhouette Score**: {silhouette_agglo:.4f}")
+        st.write(f"**Calinski-Harabasz Index**: {calinski_agglo:.4f}")
 
         #n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
         #birch_model = Birch(n_clusters=n_clusters)
