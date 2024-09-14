@@ -343,37 +343,37 @@ if model == 'Agglomerative Clustering':
         silhouette_avg = silhouette_score(normalized_df, cluster_labels)
         st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg}')
 
-        normalized_df['Cluster'] = cluster_labels
+        #normalized_df['Cluster'] = cluster_labels
 
         # Group the original DataFrame by cluster labels
-        cluster_stats = normalized_df.groupby('Cluster')
+        #cluster_stats = normalized_df.groupby('Cluster')
         
         # Calculate count for each cluster
-        cluster_count = cluster_stats.size()
-        st.write('Cluster Counts:')
-        st.write(cluster_count)
+        #cluster_count = cluster_stats.size()
+        #st.write('Cluster Counts:')
+        #st.write(cluster_count)
         
         # Calculate mean statistics for each cluster
-        cluster_mean = cluster_stats.mean()
-        st.write('Mean Statistics for Each Cluster:')
-        st.dataframe(cluster_mean)
+        #cluster_mean = cluster_stats.mean()
+        #st.write('Mean Statistics for Each Cluster:')
+        #st.dataframe(cluster_mean)
         
         # Calculate median statistics for each cluster
-        cluster_median = cluster_stats.median()
-        st.write('Median Statistics for Each Cluster:')
-        st.dataframe(cluster_median)
+        #cluster_median = cluster_stats.median()
+        #st.write('Median Statistics for Each Cluster:')
+        #st.dataframe(cluster_median)
     
         # Calculate and display Silhouette Score
-        silhouette_avg = silhouette_score(normalized_df, cluster_labels)
-        st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg:.2f}')
+        #silhouette_avg = silhouette_score(normalized_df, cluster_labels)
+        #st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg:.2f}')
         
         # Calculate Davies-Bouldin Index
-        db_index = davies_bouldin_score(normalized_df, cluster_labels)
-        st.write(f'Davies-Bouldin Index: {db_index:.2f}')
+        #db_index = davies_bouldin_score(normalized_df, cluster_labels)
+        #st.write(f'Davies-Bouldin Index: {db_index:.2f}')
         
         # Calculate Calinski-Harabasz Index
-        ch_index = calinski_harabasz_score(normalized_df, cluster_labels)
-        st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
+        #ch_index = calinski_harabasz_score(normalized_df, cluster_labels)
+        #st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
     else:
         # Step 2: Perform Agglomerative Clustering on PCA-transformed data
         agglo = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
