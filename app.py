@@ -511,8 +511,8 @@ if model == 'BIRCH Clustering':
         clustered_df['BIRCH_Cluster'] = birch_labels
         
         # Step 3: Display the first few rows of the DataFrame in Streamlit
-        # st.subheader('Clustered Data (PCA-Reduced Space)')
-        # st.dataframe(clustered_df.head())
+        st.subheader('Clustered Data (PCA-Reduced Space)')
+        st.dataframe(clustered_df.head())
         
         # Step 4: Visualize the BIRCH clusters in the PCA-reduced space
         st.subheader('BIRCH Clustering Results in PCA-Reduced Space')
@@ -523,10 +523,11 @@ if model == 'BIRCH Clustering':
         ax.set_title(f'BIRCH Clustering Results (n_clusters={n_clusters}, threshold={threshold})')
         
         # Add colorbar to the plot
-        fig.colorbar(scatter, label='Cluster')
+        cbar = fig.colorbar(scatter, ax=ax, label='Cluster')
         
         # Show the plot in Streamlit
         st.pyplot(fig)
+
         #n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
         #birch_model = Birch(n_clusters=n_clusters)
         
