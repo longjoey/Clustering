@@ -460,7 +460,7 @@ if model == 'BIRCH Clustering':
     n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=7)
     
     if dataset == 'Normal':
-        birch_model = Birch(n_clusters=n_clusters, threshold=threshold)
+        birch_model = Birch(n_clusters=n_clusters, threshold=0.7)
         birch_labels = birch_model.fit_predict(normalized_df)
         
         # Step 2: Visualize the clusters using the first two features
