@@ -150,7 +150,7 @@ if model == 'GMM' :
     show_pairplot = st.checkbox('Show Pairplot')
     if show_pairplot:
         plot_gmm_clusters(X_pca, cluster_labels, n_components)
-        plot_pairplot(X_pca, cluster_labels)
+        #plot_pairplot(X_pca, cluster_labels)
 
     # Calculate mean and median statistics for each cluster
     mean_stats = data_with_clusters.groupby('Cluster').mean()
