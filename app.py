@@ -97,7 +97,7 @@ def plot_pairplot(X_pca, cluster_labels):
     if isinstance(X_pca, pd.DataFrame):
         df = X_pca.copy()
     else:
-        df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(X_pca.shape[1])])
+        df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(4)])
     
     df['Cluster'] = cluster_labels
 
