@@ -486,6 +486,9 @@ if model == 'BIRCH Clustering':
         
         # Display the plot in Streamlit
         st.pyplot(fig)
+
+        silhouette_avg = silhouette_score(normalized_df, birch_labels)
+        st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg}')
         
         #n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
 
