@@ -377,54 +377,67 @@ if model == 'Agglomerative Clustering':
     else:
         # Step 2: Perform Agglomerative Clustering on PCA-transformed data
         agglo = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
-        cluster_labels = agglo.fit_predict(X_pca)
+        labels = agglo.fit_predict(X_pca)
+
+        st.subheader("Cluster Visualization")
+        fig, ax = plt.subplots(figsize=(10, 7))
+        scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='jet', marker='h')
+        ax.set_xlabel('Principal Component 1')
+        ax.set_ylabel('Principal Component 2')
+        ax.set_title(f'Agglomerative Clustering on PCA-transformed Data (n_clusters={n_clusters})')
+        
+        # Add a colorbar to the plot
+        fig.colorbar(scatter, label='Cluster')
+        
+        # Show the plot in Streamlit
+        st.pyplot(fig)
         
         # Add cluster labels to the original DataFrame
         # normalized_df['Cluster'] = cluster_labels
         
         # Step 3: Plot the clusters
-        st.write('Clusters after Scaling and PCA')
-        fig, ax = plt.subplots(figsize=(10, 7))
-        scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='jet', marker='h')
-        plt.xlabel('Principal Component 1')
-        plt.ylabel('Principal Component 2')
-        plt.title(f'Clusters (n_clusters={n_clusters}) after PCA')
-        plt.colorbar(scatter, label='Cluster')
-        st.pyplot(fig)
+        #st.write('Clusters after Scaling and PCA')
+        #fig, ax = plt.subplots(figsize=(10, 7))
+        #scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='jet', marker='h')
+        #plt.xlabel('Principal Component 1')
+        #plt.ylabel('Principal Component 2')
+        #plt.title(f'Clusters (n_clusters={n_clusters}) after PCA')
+        #plt.colorbar(scatter, label='Cluster')
+        #st.pyplot(fig)
         
         # Step 5: Cluster Count, Mean, and Median Statistics
 
         # Group the original DataFrame by cluster labels
-        cluster_stats = normalized_df.groupby('Cluster')
+        #cluster_stats = normalized_df.groupby('Cluster')
         
         # Calculate count for each cluster
-        cluster_count = cluster_stats.size()
-        st.write('Cluster Counts:')
-        st.write(cluster_count)
+        #cluster_count = cluster_stats.size()
+        #st.write('Cluster Counts:')
+        #st.write(cluster_count)
         
         # Calculate mean statistics for each cluster
-        cluster_mean = cluster_stats.mean()
-        st.write('Mean Statistics for Each Cluster:')
-        st.dataframe(cluster_mean)
+        #cluster_mean = cluster_stats.mean()
+        #st.write('Mean Statistics for Each Cluster:')
+        #st.dataframe(cluster_mean)
         
         # Calculate median statistics for each cluster
-        cluster_median = cluster_stats.median()
-        st.write('Median Statistics for Each Cluster:')
-        st.dataframe(cluster_median)
+        #cluster_median = cluster_stats.median()
+        #st.write('Median Statistics for Each Cluster:')
+        #st.dataframe(cluster_median)
 
         # Step 4: Calculate Clustering Scores
         
         # Calculate Davies-Bouldin Index
-        db_index = davies_bouldin_score(pca_transformed, cluster_labels)
-        st.write(f'Davies-Bouldin Index: {db_index:.2f}')
+        # db_index = davies_bouldin_score(pca_transformed, cluster_labels)
+        # st.write(f'Davies-Bouldin Index: {db_index:.2f}')
         
         # Calculate Calinski-Harabasz Index
-        ch_index = calinski_harabasz_score(pca_transformed, cluster_labels)
-        st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
+        #ch_index = calinski_harabasz_score(pca_transformed, cluster_labels)
+        #st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
         
         # Optional: Calculate Silhouette Score
-        silhouette_avg = silhouette_score(pca_transformed, cluster_labels)
-        st.write(f'Silhouette Score: {silhouette_avg:.2f}')
+        #silhouette_avg = silhouette_score(pca_transformed, cluster_labels)
+        #st.write(f'Silhouette Score: {silhouette_avg:.2f}')
 
 if model == 'BIRCH Clustering':
 
