@@ -137,47 +137,67 @@ if model == 'GMM' :
     gmm.fit(X_pca)  
 
     cluster_labels = gmm.predict(X_pca)
+    
+    st.subheader("GMM Clustering Results")
+    fig, ax = plt.subplots(figsize=(8, 6))
+    scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='viridis', s=50, edgecolor='k')
+    ax.set_xlabel('Principal Component 1')
+    ax.set_ylabel('Principal Component 2')
+    ax.set_title(f'GMM Clustering Results ({n_components} Components)')
+    fig.colorbar(scatter, ax=ax, label='Cluster')
+    ax.grid(True)
+    st.pyplot(fig)
+    
+    # Step 5: Calculate and display evaluation metrics
+    silhouette_avg = silhouette_score(X_pca, cluster_labels)
+    calinski_harabasz_avg = calinski_harabasz_score(X_pca, cluster_labels)
+    davies_bouldin_avg = davies_bouldin_score(X_pca, cluster_labels)
+    
+    st.subheader("Evaluation Metrics")
+    st.write(f"**Silhouette Score**: {silhouette_avg:.2f}")
+    st.write(f"**Calinski-Harabasz Score**: {calinski_harabasz_avg:.2f}")
+    st.write(f"**Davies-Bouldin Score**: {davies_bouldin_avg:.2f}")
 
-    data_with_clusters = X_pca.copy()
-    data_with_clusters['Cluster'] = cluster_labels
+    #data_with_clusters = X_pca.copy()
+    #data_with_clusters['Cluster'] = cluster_labels
     
     # Show the resulting clusters
-    st.write("Clustering result:")
-    st.write(data_with_clusters)
+    #st.write("Clustering result:")
+    #st.write(data_with_clusters)
 
     # Optionally, display a message about the clustering
-    st.write(f'GMM clustered the data into {n_components} clusters.')
+    #st.write(f'GMM clustered the data into {n_components} clusters.')
 
     # Get the count of data points in each cluster
-    cluster_counts = data_with_clusters['Cluster'].value_counts().sort_index()
+    #cluster_counts = data_with_clusters['Cluster'].value_counts().sort_index()
 
     # Display the cluster counts
-    st.write("Count of data points in each cluster:")
-    st.write(cluster_counts)
+    #st.write("Count of data points in each cluster:")
+    #st.write(cluster_counts)
 
-    show_pairplot = st.checkbox('Show Diagram')
-    if show_pairplot:
-        plot_gmm_clusters(X_pca, cluster_labels, n_components)
+    #show_pairplot = st.checkbox('Show Diagram')
+    #if show_pairplot:
+        #plot_gmm_clusters(X_pca, cluster_labels, n_components)
         #plot_pairplot(X_pca, cluster_labels)
 
     # Calculate mean and median statistics for each cluster
-    mean_stats = data_with_clusters.groupby('Cluster').mean()
-    median_stats = data_with_clusters.groupby('Cluster').median()
+    #mean_stats = data_with_clusters.groupby('Cluster').mean()
+    #median_stats = data_with_clusters.groupby('Cluster').median()
 
-    st.write("Mean statistics for each cluster:")
-    st.write(mean_stats)
+    #st.write("Mean statistics for each cluster:")
+    #st.write(mean_stats)
 
-    st.write("Median statistics for each cluster:")
-    st.write(median_stats)
+    #st.write("Median statistics for each cluster:")
+    #st.write(median_stats)
 
-    silhouette_avg = silhouette_score(X_pca, cluster_labels)
-    st.write(f"Silhouette Score: {silhouette_avg:.2f}")
+    #silhouette_avg = silhouette_score(X_pca, cluster_labels)
+    #st.write(f"Silhouette Score: {silhouette_avg:.2f}")
 
-    calinski_harabasz_avg = calinski_harabasz_score(X_pca, cluster_labels)
-    st.write(f"Calinski-Harabasz Score: {calinski_harabasz_avg:.2f}")
+    #calinski_harabasz_avg = calinski_harabasz_score(X_pca, cluster_labels)
+    #st.write(f"Calinski-Harabasz Score: {calinski_harabasz_avg:.2f}")
 
-    davies_bouldin_avg = davies_bouldin_score(X_pca, cluster_labels)
-    st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
+    #davies_bouldin_avg = davies_bouldin_score(X_pca, cluster_labels)
+    #st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
 
 if model == 'DBSCAN':
     eps = st.slider('Select eps:', 0.01, 5.0, 0.2, step=0.01)
