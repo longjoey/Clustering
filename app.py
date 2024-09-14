@@ -19,8 +19,8 @@ from sklearn.cluster import Birch
 # Title of the app
 st.title('FB Live Seller Clustering')
 
-url = 'https://raw.githubusercontent.com/longjoey/Clustering/main/X_pca.csv'
-url2 = 'https://raw.githubusercontent.com/longjoey/Clustering/main/normalized_df.csv'
+url = 'https://raw.githubusercontent.com/longjoey/Clustering/main/X_pca2.csv'
+url2 = 'https://raw.githubusercontent.com/longjoey/Clustering/main/normalized_df2.csv'
 
 def load_data():
     return pd.read_csv(url)
