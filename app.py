@@ -345,71 +345,41 @@ if model == 'Agglomerative Clustering':
 if model == 'BIRCH Clustering':
     X_pca = load_data3()
     normalized_df = load_data4()
-
-    dataset = st.selectbox(
-        'Select a dataset:',
-        ('Normal', 'Dimentionality Reduction')
-    )
     
     n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
     threshold = st.slider('Select threshold value for BIRCH clustering', min_value=0.1, max_value=1.0, value=0.7)
-    
-    if dataset == 'Normal':
-    
-        # Step 1: Apply BIRCH clustering
-        birch_model = Birch(n_clusters=n_clusters, threshold=threshold)
-        birch_labels = birch_model.fit_predict(normalized_df)
-        
-        # Step 2: Visualize the clusters using the first two features
-        st.subheader("BIRCH Clustering Visualization")
-        fig, ax = plt.subplots(figsize=(10, 7))
-        scatter = ax.scatter(normalized_df.iloc[:, 0], normalized_df.iloc[:, 1], c=birch_labels, cmap='viridis')
-        ax.set_xlabel('Feature 1 (scaled)')
-        ax.set_ylabel('Feature 2 (scaled)')
-        ax.set_title(f'BIRCH Clustering Visualization (n_clusters={n_clusters}, threshold={threshold})')
-        
-        # Add a colorbar to indicate cluster assignments
-        fig.colorbar(scatter, label='Cluster')
-        
-        # Display the plot in Streamlit
-        st.pyplot(fig)
 
-        silhouette_avg = silhouette_score(normalized_df, birch_labels)
-        st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg}')
-        
-        
+    birch_model = Birch(n_clusters=n_clusters, threshold=threshold)
+    birch_labels = birch_model.fit_predict(X_pca)
+    
+    # Plot the clusters
+    st.subheader("Cluster Visualization")
+    fig, ax = plt.subplots(figsize=(10, 7))
+    
+    # Check if X_pca is a DataFrame or a NumPy array
+    if isinstance(X_pca, pd.DataFrame):
+        ax.scatter(X_pca.iloc[:, 0], X_pca.iloc[:, 1], c=birch_labels, cmap='jet', marker='h')
     else:
-        birch_model = Birch(n_clusters=n_clusters, threshold=threshold)
-        birch_labels = birch_model.fit_predict(X_pca)
-        
-        # Plot the clusters
-        st.subheader("Cluster Visualization")
-        fig, ax = plt.subplots(figsize=(10, 7))
-        
-        # Check if X_pca is a DataFrame or a NumPy array
-        if isinstance(X_pca, pd.DataFrame):
-            ax.scatter(X_pca.iloc[:, 0], X_pca.iloc[:, 1], c=birch_labels, cmap='jet', marker='h')
-        else:
-            ax.scatter(X_pca[:, 0], X_pca[:, 1], c=birch_labels, cmap='jet', marker='h')
-        
-        ax.set_xlabel('Principal Component 1')
-        ax.set_ylabel('Principal Component 2')
-        ax.set_title(f'Birch Clustering on PCA-transformed Data (n_clusters={n_clusters})')
-        
-        # Add a colorbar to the plot
-        fig.colorbar(ax.scatter(X_pca.iloc[:, 0] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 0], 
-                                X_pca.iloc[:, 1] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 1], 
-                                c=birch_labels, cmap='jet', marker='h'), label='Cluster')
-        
-        # Show the plot in Streamlit
-        st.pyplot(fig)
+        ax.scatter(X_pca[:, 0], X_pca[:, 1], c=birch_labels, cmap='jet', marker='h')
+    
+    ax.set_xlabel('Principal Component 1')
+    ax.set_ylabel('Principal Component 2')
+    ax.set_title(f'Birch Clustering on PCA-transformed Data (n_clusters={n_clusters})')
+    
+    # Add a colorbar to the plot
+    fig.colorbar(ax.scatter(X_pca.iloc[:, 0] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 0], 
+                            X_pca.iloc[:, 1] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 1], 
+                            c=birch_labels, cmap='jet', marker='h'), label='Cluster')
+    
+    # Show the plot in Streamlit
+    st.pyplot(fig)
 
 
-        silhouette_birch = silhouette_score(X_pca, birch_labels)
-        calinski_birch = calinski_harabasz_score(X_pca, birch_labels)
+    silhouette_birch = silhouette_score(X_pca, birch_labels)
+    calinski_birch = calinski_harabasz_score(X_pca, birch_labels)
 
-        st.write(f"**Silhouette Score**: {silhouette_birch:.4f}")
-        st.write(f"**Calinski-Harabasz Index**: {calinski_birch:.4f}")
+    st.write(f"**Silhouette Score**: {silhouette_birch:.4f}")
+    st.write(f"**Calinski-Harabasz Index**: {calinski_birch:.4f}")
 
  
 
