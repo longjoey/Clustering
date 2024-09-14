@@ -307,63 +307,39 @@ if model == 'Agglomerative Clustering':
     X_pca = load_data3()
     normalized_df = load_data4()
     
-    dataset = st.selectbox(
-        'Select a dataset:',
-        ('Normal', 'Dimentionality Reduction')
-    )
     n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
-    if dataset == 'Normal':
+    
+    # Step 2: Perform Agglomerative Clustering on PCA-transformed data
+    agglo = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
+    labels = agglo.fit_predict(X_pca)
 
-        # Perform Agglomerative Clustering
-        hc = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
-        cluster_labels = hc.fit_predict(normalized_df)
-                
-        # Scatter plot visualization (adjust indices to match your dataset)
-        st.write('Scatter plot of Clusters')
-        fig, ax = plt.subplots()
-        scatter = ax.scatter(normalized_df.iloc[:, 0], normalized_df.iloc[:, 1], c=cluster_labels, cmap='viridis')
-        plt.title(f'Scatter plot of Clusters (n_clusters={n_clusters})')
-        plt.xlabel('Feature 0')  # Replace with actual feature name
-        plt.ylabel('Feature 1')  # Replace with actual feature name
-        fig.colorbar(scatter, label='Cluster')
-        st.pyplot(fig)
-
-        # Calculate Silhouette Score
-        silhouette_avg = silhouette_score(normalized_df, cluster_labels)
-        st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg}')
-
+    # Plot the clusters
+    st.subheader("Cluster Visualization")
+    fig, ax = plt.subplots(figsize=(10, 7))
+    
+    # Check if X_pca is a DataFrame or a NumPy array
+    if isinstance(X_pca, pd.DataFrame):
+        ax.scatter(X_pca.iloc[:, 0], X_pca.iloc[:, 1], c=labels, cmap='jet', marker='h')
     else:
-        # Step 2: Perform Agglomerative Clustering on PCA-transformed data
-        agglo = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
-        labels = agglo.fit_predict(X_pca)
+        ax.scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='jet', marker='h')
+    
+    ax.set_xlabel('Principal Component 1')
+    ax.set_ylabel('Principal Component 2')
+    ax.set_title(f'Agglomerative Clustering on PCA-transformed Data (n_clusters={n_clusters})')
+    
+    # Add a colorbar to the plot
+    fig.colorbar(ax.scatter(X_pca.iloc[:, 0] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 0], 
+                            X_pca.iloc[:, 1] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 1], 
+                            c=labels, cmap='jet', marker='h'), label='Cluster')
+    
+    # Show the plot in Streamlit
+    st.pyplot(fig)
 
-        # Plot the clusters
-        st.subheader("Cluster Visualization")
-        fig, ax = plt.subplots(figsize=(10, 7))
-        
-        # Check if X_pca is a DataFrame or a NumPy array
-        if isinstance(X_pca, pd.DataFrame):
-            ax.scatter(X_pca.iloc[:, 0], X_pca.iloc[:, 1], c=labels, cmap='jet', marker='h')
-        else:
-            ax.scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='jet', marker='h')
-        
-        ax.set_xlabel('Principal Component 1')
-        ax.set_ylabel('Principal Component 2')
-        ax.set_title(f'Agglomerative Clustering on PCA-transformed Data (n_clusters={n_clusters})')
-        
-        # Add a colorbar to the plot
-        fig.colorbar(ax.scatter(X_pca.iloc[:, 0] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 0], 
-                                X_pca.iloc[:, 1] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 1], 
-                                c=labels, cmap='jet', marker='h'), label='Cluster')
-        
-        # Show the plot in Streamlit
-        st.pyplot(fig)
+    silhouette_agglo = silhouette_score(X_pca, labels)
+    calinski_agglo = calinski_harabasz_score(X_pca, labels)
 
-        silhouette_agglo = silhouette_score(X_pca, labels)
-        calinski_agglo = calinski_harabasz_score(X_pca, labels)
-
-        st.write(f"**Silhouette Score**: {silhouette_agglo:.4f}")
-        st.write(f"**Calinski-Harabasz Index**: {calinski_agglo:.4f}")
+    st.write(f"**Silhouette Score**: {silhouette_agglo:.4f}")
+    st.write(f"**Calinski-Harabasz Index**: {calinski_agglo:.4f}")
         
 
 if model == 'BIRCH Clustering':
