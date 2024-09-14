@@ -379,15 +379,24 @@ if model == 'Agglomerative Clustering':
         agglo = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
         labels = agglo.fit_predict(X_pca)
 
+        # Plot the clusters
         st.subheader("Cluster Visualization")
         fig, ax = plt.subplots(figsize=(10, 7))
-        scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='jet', marker='h')
+        
+        # Check if X_pca is a DataFrame or a NumPy array
+        if isinstance(X_pca, pd.DataFrame):
+            ax.scatter(X_pca.iloc[:, 0], X_pca.iloc[:, 1], c=labels, cmap='jet', marker='h')
+        else:
+            ax.scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='jet', marker='h')
+        
         ax.set_xlabel('Principal Component 1')
         ax.set_ylabel('Principal Component 2')
         ax.set_title(f'Agglomerative Clustering on PCA-transformed Data (n_clusters={n_clusters})')
         
         # Add a colorbar to the plot
-        fig.colorbar(scatter, label='Cluster')
+        fig.colorbar(ax.scatter(X_pca.iloc[:, 0] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 0], 
+                                X_pca.iloc[:, 1] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 1], 
+                                c=labels, cmap='jet', marker='h'), label='Cluster')
         
         # Show the plot in Streamlit
         st.pyplot(fig)
