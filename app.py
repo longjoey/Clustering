@@ -210,10 +210,10 @@ if model == 'DBSCAN':
     silhouette_avg = silhouette_score(filtered_data, filtered_labels)
     st.write(f"Silhouette Score: {silhouette_avg:.2f}")
 
-    calinski_harabasz_avg = calinski_harabasz_score(X_pca, cluster_labels)
+    calinski_harabasz_avg = calinski_harabasz_score(filtered_data, filtered_labels)
     st.write(f"Calinski-Harabasz Score: {calinski_harabasz_avg:.2f}")
 
-    davies_bouldin_avg = davies_bouldin_score(X_pca, cluster_labels)
+    davies_bouldin_avg = davies_bouldin_score(filtered_data, filtered_labels)
     st.write(f"Davies-Bouldin Score: {davies_bouldin_avg:.2f}")
 
 if model == 'Self-Organizing Maps':
