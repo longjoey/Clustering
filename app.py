@@ -458,10 +458,10 @@ if model == 'BIRCH Clustering':
     )
     
     n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=7)
+    threshold = st.slider('Select threshold value for BIRCH clustering', min_value=0.1, max_value=1.0, value=0.7)
     
     if dataset == 'Normal':
-        threshold = st.slider('Select threshold value for BIRCH clustering', min_value=0.1, max_value=1.0, value=0.7)
-
+    
         # Step 1: Apply BIRCH clustering
         birch_model = Birch(n_clusters=n_clusters, threshold=threshold)
         birch_labels = birch_model.fit_predict(normalized_df)
@@ -503,61 +503,85 @@ if model == 'BIRCH Clustering':
         #st.write('DataFrame with BIRCH Cluster Labels:')
         #st.dataframe(normalized_df.head())
     else:
-        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
-        birch_model = Birch(n_clusters=n_clusters)
+        birch_model = Birch(n_clusters=n_clusters, threshold=threshold)
+        birch_labels = birch_model.fit_predict(X_pca)
         
-        # Fit the model and predict cluster labels
-        birch_labels = birch_model.fit_predict(pca_transformed)
-        
-        # Create a DataFrame for PCA-transformed data and add the cluster labels
-        clustered_df = pd.DataFrame(pca_transformed, columns=[f'PC{i+1}' for i in range(pca_transformed.shape[1])])
+        # Step 2: Create DataFrame for PCA-transformed data and add cluster labels
+        clustered_df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(X_pca.shape[1])])
         clustered_df['BIRCH_Cluster'] = birch_labels
         
-        # Visualize the BIRCH clusters in the PCA-reduced space
-        st.write('BIRCH Clustering Visualization')
+        # Step 3: Display the first few rows of the DataFrame in Streamlit
+        st.subheader('Clustered Data (PCA-Reduced Space)')
+        st.dataframe(clustered_df.head())
+        
+        # Step 4: Visualize the BIRCH clusters in the PCA-reduced space
+        st.subheader('BIRCH Clustering Results in PCA-Reduced Space')
         fig, ax = plt.subplots(figsize=(10, 7))
         scatter = ax.scatter(clustered_df['PC1'], clustered_df['PC2'], c=birch_labels, cmap='viridis', marker='o')
-        plt.xlabel('Principal Component 1')
-        plt.ylabel('Principal Component 2')
-        plt.title('BIRCH Clustering Results in PCA-Reduced Space')
+        ax.set_xlabel('Principal Component 1')
+        ax.set_ylabel('Principal Component 2')
+        ax.set_title(f'BIRCH Clustering Results (n_clusters={n_clusters}, threshold={threshold})')
+        
+        # Add colorbar to the plot
+        fig.colorbar(scatter, label='Cluster')
+        
+        # Show the plot in Streamlit
+        st.pyplot(fig)
+        #n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
+        #birch_model = Birch(n_clusters=n_clusters)
+        
+        # Fit the model and predict cluster labels
+        #birch_labels = birch_model.fit_predict(pca_transformed)
+        
+        # Create a DataFrame for PCA-transformed data and add the cluster labels
+        #clustered_df = pd.DataFrame(pca_transformed, columns=[f'PC{i+1}' for i in range(pca_transformed.shape[1])])
+        #clustered_df['BIRCH_Cluster'] = birch_labels
+        
+        # Visualize the BIRCH clusters in the PCA-reduced space
+        #st.write('BIRCH Clustering Visualization')
+        #fig, ax = plt.subplots(figsize=(10, 7))
+        #scatter = ax.scatter(clustered_df['PC1'], clustered_df['PC2'], c=birch_labels, cmap='viridis', marker='o')
+        #plt.xlabel('Principal Component 1')
+        #plt.ylabel('Principal Component 2')
+        #plt.title('BIRCH Clustering Results in PCA-Reduced Space')
         
         # Add a colorbar to the scatter plot
-        cbar = plt.colorbar(scatter, ax=ax, label='Cluster')
-        st.pyplot(fig)
+        #cbar = plt.colorbar(scatter, ax=ax, label='Cluster')
+        #st.pyplot(fig)
         
         # Display the DataFrame with the first few rows
-        st.write('DataFrame with BIRCH Cluster Labels:')
-        st.dataframe(clustered_df.head())
+        #st.write('DataFrame with BIRCH Cluster Labels:')
+        #st.dataframe(clustered_df.head())
 
         # Calculate and display the clustering metrics
-        silhouette_birch = silhouette_score(pca_transformed, birch_labels)
-        calinski_birch = calinski_harabasz_score(pca_transformed, birch_labels)
+        #silhouette_birch = silhouette_score(pca_transformed, birch_labels)
+        #calinski_birch = calinski_harabasz_score(pca_transformed, birch_labels)
         
-        st.write(f"Silhouette Score: {silhouette_birch:.4f}")
-        st.write(f"Calinski-Harabasz Index: {calinski_birch:.4f}")
+        #st.write(f"Silhouette Score: {silhouette_birch:.4f}")
+        #st.write(f"Calinski-Harabasz Index: {calinski_birch:.4f}")
 
-        cluster_stats = clustered_df.groupby('BIRCH_Cluster').agg(
-            count=('BIRCH_Cluster', 'size'),
-            mean_pc1=('PC1', 'mean'),
-            median_pc1=('PC1', 'median'),
-            mean_pc2=('PC2', 'mean'),
-            median_pc2=('PC2', 'median')
-        ).reset_index()
+        #cluster_stats = clustered_df.groupby('BIRCH_Cluster').agg(
+        #    count=('BIRCH_Cluster', 'size'),
+        #    mean_pc1=('PC1', 'mean'),
+        #    median_pc1=('PC1', 'median'),
+        #    mean_pc2=('PC2', 'mean'),
+        #    median_pc2=('PC2', 'median')
+        #).reset_index()
         
         # Separate tables for count, mean, and median statistics
-        count_table = cluster_stats[['BIRCH_Cluster', 'count']]
-        mean_table = cluster_stats[['BIRCH_Cluster', 'mean_pc1', 'mean_pc2']]
-        median_table = cluster_stats[['BIRCH_Cluster', 'median_pc1', 'median_pc2']]
+        #count_table = cluster_stats[['BIRCH_Cluster', 'count']]
+        #mean_table = cluster_stats[['BIRCH_Cluster', 'mean_pc1', 'mean_pc2']]
+        #median_table = cluster_stats[['BIRCH_Cluster', 'median_pc1', 'median_pc2']]
         
         # Display the tables in Streamlit
-        st.write('Cluster Counts:')
-        st.dataframe(count_table)
+        #st.write('Cluster Counts:')
+        #st.dataframe(count_table)
         
-        st.write('Cluster Mean Statistics:')
-        st.dataframe(mean_table)
+        #st.write('Cluster Mean Statistics:')
+        #st.dataframe(mean_table)
         
-        st.write('Cluster Median Statistics:')
-        st.dataframe(median_table)
+        #st.write('Cluster Median Statistics:')
+        #st.dataframe(median_table)
  
 
 
