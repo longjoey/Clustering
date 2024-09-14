@@ -506,24 +506,24 @@ if model == 'BIRCH Clustering':
         birch_model = Birch(n_clusters=n_clusters, threshold=threshold)
         birch_labels = birch_model.fit_predict(X_pca)
         
-        # Step 2: Create DataFrame for PCA-transformed data and add cluster labels
-        clustered_df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(X_pca.shape[1])])
-        clustered_df['BIRCH_Cluster'] = birch_labels
-        
-        # Step 3: Display the first few rows of the DataFrame in Streamlit
-        st.subheader('Clustered Data (PCA-Reduced Space)')
-        st.dataframe(clustered_df.head())
-        
-        # Step 4: Visualize the BIRCH clusters in the PCA-reduced space
-        st.subheader('BIRCH Clustering Results in PCA-Reduced Space')
+        # Plot the clusters
+        st.subheader("Cluster Visualization")
         fig, ax = plt.subplots(figsize=(10, 7))
-        scatter = ax.scatter(clustered_df['PC1'], clustered_df['PC2'], c=birch_labels, cmap='viridis', marker='o')
+        
+        # Check if X_pca is a DataFrame or a NumPy array
+        if isinstance(X_pca, pd.DataFrame):
+            ax.scatter(X_pca.iloc[:, 0], X_pca.iloc[:, 1], c=birch_labels, cmap='jet', marker='h')
+        else:
+            ax.scatter(X_pca[:, 0], X_pca[:, 1], c=birch_labels, cmap='jet', marker='h')
+        
         ax.set_xlabel('Principal Component 1')
         ax.set_ylabel('Principal Component 2')
-        ax.set_title(f'BIRCH Clustering Results (n_clusters={n_clusters}, threshold={threshold})')
+        ax.set_title(f'Birch Clustering on PCA-transformed Data (n_clusters={n_clusters})')
         
-        # Add colorbar to the plot
-        cbar = fig.colorbar(scatter, ax=ax, label='Cluster')
+        # Add a colorbar to the plot
+        fig.colorbar(ax.scatter(X_pca.iloc[:, 0] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 0], 
+                                X_pca.iloc[:, 1] if isinstance(X_pca, pd.DataFrame) else X_pca[:, 1], 
+                                c=birch_labels, cmap='jet', marker='h'), label='Cluster')
         
         # Show the plot in Streamlit
         st.pyplot(fig)
