@@ -21,12 +21,20 @@ st.title('FB Live Seller Clustering')
 
 url = 'https://raw.githubusercontent.com/longjoey/Clustering/main/X_pca2.csv'
 url2 = 'https://raw.githubusercontent.com/longjoey/Clustering/main/normalized_df2.csv'
+url3 = 'https://raw.githubusercontent.com/longjoey/Clustering/main/X_pca3.csv'
+url4 = 'https://raw.githubusercontent.com/longjoey/Clustering/main/normalized_df3.csv'
 
 def load_data():
     return pd.read_csv(url)
 
 def load_data2():
     return pd.read_csv(url2)
+
+def load_data3():
+    return pd.read_csv(url3)
+
+def load_data4():
+    return pd.read_csv(url4)
 
 def calculate_topographic_error(som, data):
     error_count = 0
@@ -307,6 +315,8 @@ if model == 'Self-Organizing Maps':
     #pca_transformed = pca.fit_transform(normalized_df)
 
 if model == 'Agglomerative Clustering':
+    X_pca = load_df3()
+    normalized_df = load_df4()
     
     dataset = st.selectbox(
         'Select a dataset:',
