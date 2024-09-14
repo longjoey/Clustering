@@ -204,7 +204,10 @@ if model == 'DBSCAN':
     st.write("Median statistics for each cluster:")
     st.write(median_stats)
 
-    silhouette_avg = silhouette_score(X_pca, cluster_labels)
+    filtered_data = X_pca[cluster_labels != -1]
+    filtered_labels = cluster_labels[cluster_labels != -1]
+
+    silhouette_avg = silhouette_score(filtered_data, filtered_labels)
     st.write(f"Silhouette Score: {silhouette_avg:.2f}")
 
     calinski_harabasz_avg = calinski_harabasz_score(X_pca, cluster_labels)
