@@ -100,23 +100,6 @@ def plot_dbscan_clusters(X_pca, cluster_labels, n_components):
     st.pyplot(plt)
     plt.close()  # Close the plot to avoid display issues
 
-def plot_pairplot(X_pca, cluster_labels):
-    # Create a DataFrame for pairplot
-    if isinstance(X_pca, pd.DataFrame):
-        df = X_pca.copy()
-    else:
-        df = pd.DataFrame(X_pca, columns=[f'PC{i+1}' for i in range(4)])
-    
-    df['Cluster'] = cluster_labels
-
-    # Plot pairplot
-    plt.figure(figsize=(10, 8))
-    pairplot = sns.pairplot(df, hue='Cluster', palette='viridis')
-    plt.suptitle('Pairplot of PCA Components Colored by Clusters', y=1.02)
-    
-    # Use Streamlit's st.pyplot() to display the plot
-    st.pyplot(plt)
-    plt.close()  # Close the plot to avoid display issues
 
 
 X_pca = load_data()
@@ -132,7 +115,7 @@ if model == 'GMM' :
     n_components = st.slider(
         'Number of components:', 1, 10, 8
     )
-    #X_pca = X_pca.to_numpy()
+
 
     gmm = GaussianMixture(covariance_type = 'diag', n_components = n_components, random_state = 42) 
     gmm.fit(X_pca)  
@@ -302,17 +285,6 @@ if model == 'Self-Organizing Maps':
     mqe = calculate_mqe(som, X_pca)
     st.write(f"Mean Quantization Error: {mqe:.4f}")
 
-#if model == 'Agglomerative Clustering' or model == 'BIRCH Clustering':
-    # PCA Components selection slider
-    #n_pca_components = st.slider('Select number of PCA components:', min_value=2, max_value=10, value=5, key='pca_components_slider')
-    
-    # Number of clusters selection slider
-    #n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5, key='clusters_slider')
-
-    # Step 1: Apply PCA for dimensionality reduction
-    #pca = PCA(n_components=n_pca_components)
-    #pca_transformed = pca.fit_transform(normalized_df)
-
 if model == 'Agglomerative Clustering':
     X_pca = load_data3()
     normalized_df = load_data4()
@@ -342,37 +314,6 @@ if model == 'Agglomerative Clustering':
         silhouette_avg = silhouette_score(normalized_df, cluster_labels)
         st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg}')
 
-        #normalized_df['Cluster'] = cluster_labels
-
-        # Group the original DataFrame by cluster labels
-        #cluster_stats = normalized_df.groupby('Cluster')
-        
-        # Calculate count for each cluster
-        #cluster_count = cluster_stats.size()
-        #st.write('Cluster Counts:')
-        #st.write(cluster_count)
-        
-        # Calculate mean statistics for each cluster
-        #cluster_mean = cluster_stats.mean()
-        #st.write('Mean Statistics for Each Cluster:')
-        #st.dataframe(cluster_mean)
-        
-        # Calculate median statistics for each cluster
-        #cluster_median = cluster_stats.median()
-        #st.write('Median Statistics for Each Cluster:')
-        #st.dataframe(cluster_median)
-    
-        # Calculate and display Silhouette Score
-        #silhouette_avg = silhouette_score(normalized_df, cluster_labels)
-        #st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg:.2f}')
-        
-        # Calculate Davies-Bouldin Index
-        #db_index = davies_bouldin_score(normalized_df, cluster_labels)
-        #st.write(f'Davies-Bouldin Index: {db_index:.2f}')
-        
-        # Calculate Calinski-Harabasz Index
-        #ch_index = calinski_harabasz_score(normalized_df, cluster_labels)
-        #st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
     else:
         # Step 2: Perform Agglomerative Clustering on PCA-transformed data
         agglo = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
@@ -406,52 +347,6 @@ if model == 'Agglomerative Clustering':
         st.write(f"**Silhouette Score**: {silhouette_agglo:.4f}")
         st.write(f"**Calinski-Harabasz Index**: {calinski_agglo:.4f}")
         
-        # Add cluster labels to the original DataFrame
-        # normalized_df['Cluster'] = cluster_labels
-        
-        # Step 3: Plot the clusters
-        #st.write('Clusters after Scaling and PCA')
-        #fig, ax = plt.subplots(figsize=(10, 7))
-        #scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='jet', marker='h')
-        #plt.xlabel('Principal Component 1')
-        #plt.ylabel('Principal Component 2')
-        #plt.title(f'Clusters (n_clusters={n_clusters}) after PCA')
-        #plt.colorbar(scatter, label='Cluster')
-        #st.pyplot(fig)
-        
-        # Step 5: Cluster Count, Mean, and Median Statistics
-
-        # Group the original DataFrame by cluster labels
-        #cluster_stats = normalized_df.groupby('Cluster')
-        
-        # Calculate count for each cluster
-        #cluster_count = cluster_stats.size()
-        #st.write('Cluster Counts:')
-        #st.write(cluster_count)
-        
-        # Calculate mean statistics for each cluster
-        #cluster_mean = cluster_stats.mean()
-        #st.write('Mean Statistics for Each Cluster:')
-        #st.dataframe(cluster_mean)
-        
-        # Calculate median statistics for each cluster
-        #cluster_median = cluster_stats.median()
-        #st.write('Median Statistics for Each Cluster:')
-        #st.dataframe(cluster_median)
-
-        # Step 4: Calculate Clustering Scores
-        
-        # Calculate Davies-Bouldin Index
-        # db_index = davies_bouldin_score(pca_transformed, cluster_labels)
-        # st.write(f'Davies-Bouldin Index: {db_index:.2f}')
-        
-        # Calculate Calinski-Harabasz Index
-        #ch_index = calinski_harabasz_score(pca_transformed, cluster_labels)
-        #st.write(f'Calinski-Harabasz Index: {ch_index:.2f}')
-        
-        # Optional: Calculate Silhouette Score
-        #silhouette_avg = silhouette_score(pca_transformed, cluster_labels)
-        #st.write(f'Silhouette Score: {silhouette_avg:.2f}')
 
 if model == 'BIRCH Clustering':
     X_pca = load_data3()
@@ -488,28 +383,7 @@ if model == 'BIRCH Clustering':
         silhouette_avg = silhouette_score(normalized_df, birch_labels)
         st.write(f'Silhouette Score for {n_clusters} clusters: {silhouette_avg}')
         
-        #n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
-
-        # Step 1: Apply BIRCH Clustering
-        #birch_model = Birch(n_clusters=n_clusters, threshold=0.8)
-        #birch_labels = birch_model.fit_predict(normalized_df)
         
-        # Step 2: Add the BIRCH cluster labels to the DataFrame
-        #normalized_df['BIRCH_Cluster_Labels'] = birch_labels
-        
-        # Step 3: Visualize the clusters using the first two features for simplicity
-        #st.write('BIRCH Clustering Visualization')
-        #fig, ax = plt.subplots(figsize=(10, 7))
-        #scatter = ax.scatter(normalized_df.iloc[:, 0], normalized_df.iloc[:, 1], c=birch_labels, cmap='viridis')
-        #plt.xlabel('Feature 1 (scaled)')
-        #plt.ylabel('Feature 2 (scaled)')
-        #plt.title('BIRCH Clustering Visualization')
-        #plt.colorbar(scatter, label='Cluster')
-        #st.pyplot(fig)
-        
-        # Display the DataFrame with the cluster labels
-        #st.write('DataFrame with BIRCH Cluster Labels:')
-        #st.dataframe(normalized_df.head())
     else:
         birch_model = Birch(n_clusters=n_clusters, threshold=threshold)
         birch_labels = birch_model.fit_predict(X_pca)
@@ -543,61 +417,6 @@ if model == 'BIRCH Clustering':
         st.write(f"**Silhouette Score**: {silhouette_birch:.4f}")
         st.write(f"**Calinski-Harabasz Index**: {calinski_birch:.4f}")
 
-        #n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
-        #birch_model = Birch(n_clusters=n_clusters)
-        
-        # Fit the model and predict cluster labels
-        #birch_labels = birch_model.fit_predict(pca_transformed)
-        
-        # Create a DataFrame for PCA-transformed data and add the cluster labels
-        #clustered_df = pd.DataFrame(pca_transformed, columns=[f'PC{i+1}' for i in range(pca_transformed.shape[1])])
-        #clustered_df['BIRCH_Cluster'] = birch_labels
-        
-        # Visualize the BIRCH clusters in the PCA-reduced space
-        #st.write('BIRCH Clustering Visualization')
-        #fig, ax = plt.subplots(figsize=(10, 7))
-        #scatter = ax.scatter(clustered_df['PC1'], clustered_df['PC2'], c=birch_labels, cmap='viridis', marker='o')
-        #plt.xlabel('Principal Component 1')
-        #plt.ylabel('Principal Component 2')
-        #plt.title('BIRCH Clustering Results in PCA-Reduced Space')
-        
-        # Add a colorbar to the scatter plot
-        #cbar = plt.colorbar(scatter, ax=ax, label='Cluster')
-        #st.pyplot(fig)
-        
-        # Display the DataFrame with the first few rows
-        #st.write('DataFrame with BIRCH Cluster Labels:')
-        #st.dataframe(clustered_df.head())
-
-        # Calculate and display the clustering metrics
-        #silhouette_birch = silhouette_score(pca_transformed, birch_labels)
-        #calinski_birch = calinski_harabasz_score(pca_transformed, birch_labels)
-        
-        #st.write(f"Silhouette Score: {silhouette_birch:.4f}")
-        #st.write(f"Calinski-Harabasz Index: {calinski_birch:.4f}")
-
-        #cluster_stats = clustered_df.groupby('BIRCH_Cluster').agg(
-        #    count=('BIRCH_Cluster', 'size'),
-        #    mean_pc1=('PC1', 'mean'),
-        #    median_pc1=('PC1', 'median'),
-        #    mean_pc2=('PC2', 'mean'),
-        #    median_pc2=('PC2', 'median')
-        #).reset_index()
-        
-        # Separate tables for count, mean, and median statistics
-        #count_table = cluster_stats[['BIRCH_Cluster', 'count']]
-        #mean_table = cluster_stats[['BIRCH_Cluster', 'mean_pc1', 'mean_pc2']]
-        #median_table = cluster_stats[['BIRCH_Cluster', 'median_pc1', 'median_pc2']]
-        
-        # Display the tables in Streamlit
-        #st.write('Cluster Counts:')
-        #st.dataframe(count_table)
-        
-        #st.write('Cluster Mean Statistics:')
-        #st.dataframe(mean_table)
-        
-        #st.write('Cluster Median Statistics:')
-        #st.dataframe(median_table)
  
 
 
