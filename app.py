@@ -156,10 +156,9 @@ if model == 'GMM' :
     st.write("Count of data points in each cluster:")
     st.write(cluster_counts)
 
-    show_pairplot = st.checkbox('Show Diagram')
-    if show_pairplot:
-        plot_gmm_clusters(X_pca, cluster_labels, n_components)
-        #plot_pairplot(X_pca, cluster_labels)
+    
+    plot_gmm_clusters(X_pca, cluster_labels, n_components)
+     
 
     # Calculate mean and median statistics for each cluster
     mean_stats = data_with_clusters.groupby('Cluster').mean()
@@ -238,27 +237,26 @@ if model == 'Self-Organizing Maps':
     som.random_weights_init(X_pca)  # Initialize weights with input data
     som.train_random(X_pca, 1000)  # Train the SOM
 
-    show_som_map = st.checkbox('Show Diagram')
-
-    if show_som_map:
-        st.subheader("SOM Clustering Visualization")
-        fig1, ax1 = plt.subplots(figsize=(8, 6))
-        for i, x in enumerate(X_pca):
-            w = som.winner(x)  # Get the winning neuron
-            ax1.text(w[0] + 0.5, w[1] + 0.5, str(i), color=plt.cm.tab10(i % 10), fontdict={'weight': 'bold', 'size': 9})
-        
-        ax1.set_xlim([0, som_x])
-        ax1.set_ylim([0, som_y])
-        ax1.set_title('SOM Clustering on PCA-Reduced Data')
-        st.pyplot(fig1)
-        
-        # Visualize the SOM weight distance map (U-Matrix)
-        st.subheader("SOM U-Matrix Visualization")
-        fig2, ax2 = plt.subplots(figsize=(8, 6))
-        cax = ax2.pcolor(som.distance_map().T, cmap='bone_r')  # Distance map as background
-        fig2.colorbar(cax, label='Distance')
-        ax2.set_title('SOM U-Matrix')
-        st.pyplot(fig2)
+  
+ 
+    st.subheader("SOM Clustering Visualization")
+    fig1, ax1 = plt.subplots(figsize=(8, 6))
+    for i, x in enumerate(X_pca):
+        w = som.winner(x)  # Get the winning neuron
+        ax1.text(w[0] + 0.5, w[1] + 0.5, str(i), color=plt.cm.tab10(i % 10), fontdict={'weight': 'bold', 'size': 9})
+    
+    ax1.set_xlim([0, som_x])
+    ax1.set_ylim([0, som_y])
+    ax1.set_title('SOM Clustering on PCA-Reduced Data')
+    st.pyplot(fig1)
+    
+    # Visualize the SOM weight distance map (U-Matrix)
+    st.subheader("SOM U-Matrix Visualization")
+    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    cax = ax2.pcolor(som.distance_map().T, cmap='bone_r')  # Distance map as background
+    fig2.colorbar(cax, label='Distance')
+    ax2.set_title('SOM U-Matrix')
+    st.pyplot(fig2)
 
     winner_coordinates = np.array([som.winner(x) for x in X_pca])
 
