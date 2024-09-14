@@ -147,7 +147,7 @@ if model == 'GMM' :
     st.write("Count of data points in each cluster:")
     st.write(cluster_counts)
 
-    show_pairplot = st.checkbox('Show Pairplot')
+    show_pairplot = st.checkbox('Show Diagram')
     if show_pairplot:
         plot_gmm_clusters(X_pca, cluster_labels, n_components)
         #plot_pairplot(X_pca, cluster_labels)
