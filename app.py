@@ -364,15 +364,15 @@ if model == 'Agglomerative Clustering':
     else:
         # Step 2: Perform Agglomerative Clustering on PCA-transformed data
         agglo = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
-        cluster_labels = agglo.fit_predict(pca_transformed)
+        cluster_labels = agglo.fit_predict(X_pca)
         
         # Add cluster labels to the original DataFrame
-        normalized_df['Cluster'] = cluster_labels
+        # normalized_df['Cluster'] = cluster_labels
         
         # Step 3: Plot the clusters
         st.write('Clusters after Scaling and PCA')
         fig, ax = plt.subplots(figsize=(10, 7))
-        scatter = ax.scatter(pca_transformed[:, 0], pca_transformed[:, 1], c=cluster_labels, cmap='viridis', marker='o')
+        scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], c=cluster_labels, cmap='jet', marker='h')
         plt.xlabel('Principal Component 1')
         plt.ylabel('Principal Component 2')
         plt.title(f'Clusters (n_clusters={n_clusters}) after PCA')
