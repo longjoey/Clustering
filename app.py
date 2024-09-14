@@ -312,9 +312,8 @@ if model == 'Agglomerative Clustering':
         'Select a dataset:',
         ('Normal', 'Dimentionality Reduction')
     )
-    
+    n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
     if dataset == 'Normal':
-        n_clusters = st.slider('Select number of clusters:', min_value=2, max_value=10, value=5)
 
         # Perform Agglomerative Clustering
         hc = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
