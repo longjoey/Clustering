@@ -229,7 +229,7 @@ if model == 'Self-Organizing Maps':
     som.random_weights_init(X_pca)  # Initialize weights with input data
     som.train_random(X_pca, 1000)  # Train the SOM
 
-    show_som_map = st.checkbox('Show SOM Weight Map')
+    show_som_map = st.checkbox('Show Diagram')
 
     if show_som_map:
         st.subheader("SOM Clustering Visualization")
@@ -251,8 +251,6 @@ if model == 'Self-Organizing Maps':
         ax2.set_title('SOM U-Matrix')
         st.pyplot(fig2)
 
-    
-    
     winner_coordinates = np.array([som.winner(x) for x in X_pca])
 
     # Convert the coordinates into a single cluster label for each data point
